@@ -1,0 +1,335 @@
+{
+    "sidebar": [
+        {
+            "category": "UTAMA",
+            "items": [
+                {
+                    "name": "Dashboard",
+                    "path": "#/dashboard",
+                    "icon": "layout-dashboard",
+                    "roles": [
+                        "Admin",
+                        "Warga",
+                        "Satpam",
+                        "Bendahara"
+                    ]
+                },
+                {
+                    "name": "Identitas Digital",
+                    "path": "#/my-qr",
+                    "icon": "qr-code",
+                    "roles": [
+                        "Warga",
+                        "Admin",
+                        "Bendahara"
+                    ]
+                },
+                {
+                    "name": "Tagihan Saya",
+                    "path": "#/invoice-resident",
+                    "icon": "wallet",
+                    "roles": [
+                        "Warga"
+                    ]
+                }
+            ]
+        },
+        {
+            "category": "ADMINISTRASI",
+            "items": [
+                {
+                    "name": "Data Warga",
+                    "path": "#/warga",
+                    "icon": "users",
+                    "roles": [
+                        "Admin",
+                        "Bendahara"
+                    ]
+                },
+                {
+                    "name": "Analisis Warga",
+                    "path": "#/demographics",
+                    "icon": "pie-chart",
+                    "roles": [
+                        "Admin",
+                        "Bendahara"
+                    ]
+                },
+                {
+                    "name": "Notulensi Rapat(AI)",
+                    "path": "#/minutes",
+                    "icon": "mic",
+                    "roles": [
+                        "Admin",
+                        "Bendahara",
+                        "Warga"
+                    ]
+                },
+                {
+                    "name": "Papan Peringkat",
+                    "path": "#/leaderboard",
+                    "icon": "trophy",
+                    "roles": [
+                        "Admin",
+                        "Satpam",
+                        "Warga",
+                        "Bendahara"
+                    ]
+                }
+            ]
+        },
+        {
+            "category": "KEUANGAN",
+            "items": [
+                {
+                    "name": "Laporan Kas",
+                    "path": "#/finance",
+                    "icon": "banknote",
+                    "roles": [
+                        "Admin",
+                        "Bendahara",
+                        "Warga"
+                    ]
+                },
+                {
+                    "name": "Analitik Kas",
+                    "path": "#/analytics",
+                    "icon": "bar-chart-3",
+                    "roles": [
+                        "Admin",
+                        "Bendahara",
+                        "Warga"
+                    ]
+                },
+                {
+                    "name": "Digital Invoicing",
+                    "path": "#/invoice-admin",
+                    "icon": "receipt",
+                    "roles": [
+                        "Admin",
+                        "Bendahara"
+                    ]
+                },
+                {
+                    "name": "Manajemen Petugas",
+                    "icon": "coins",
+                    "roles": [
+                        "Admin",
+                        "Bendahara",
+                        "Satpam"
+                    ],
+                    "children": [
+                        {
+                            "name": "Slip Gaji",
+                            "path": "#/salary",
+                            "roles": [
+                                "Satpam",
+                                "Admin"
+                            ]
+                        },
+                        {
+                            "name": "Kasbon Petugas",
+                            "path": "#/kasbon",
+                            "roles": [
+                                "Admin",
+                                "Bendahara"
+                            ]
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "category": "KEAMANAN",
+            "items": [
+                {
+                    "name": "Satpam Hub",
+                    "icon": "shield-check",
+                    "roles": [
+                        "Admin",
+                        "Satpam",
+                        "Warga"
+                    ],
+                    "children": [
+                        {
+                            "name": "Portal Utama",
+                            "path": "#/satpam-portal",
+                            "roles": [
+                                "Admin",
+                                "Satpam"
+                            ]
+                        },
+                        {
+                            "name": "Riwayat Absen",
+                            "path": "#/attendance",
+                            "roles": [
+                                "Admin",
+                                "Satpam",
+                                "Warga"
+                            ]
+                        },
+                        {
+                            "name": "Status Patroli",
+                            "path": "#/patrol-status",
+                            "roles": [
+                                "Admin",
+                                "Satpam",
+                                "Warga",
+                                "Bendahara"
+                            ]
+                        },
+                        {
+                            "name": "Hub Cetak QR",
+                            "path": "#/checkpoint-admin",
+                            "roles": [
+                                "Admin",
+                                "Bendahara"
+                            ]
+                        }
+                    ]
+                },
+                {
+                    "name": "Monitoring CCTV",
+                    "path": "#/cctv",
+                    "icon": "video",
+                    "roles": [
+                        "Admin",
+                        "Satpam",
+                        "Warga"
+                    ]
+                },
+                {
+                    "name": "Analisa Keamanan",
+                    "path": "#/security-analytics",
+                    "icon": "bar-chart-2",
+                    "roles": [
+                        "Admin",
+                        "Bendahara"
+                    ]
+                },
+                {
+                    "name": "Buku Tamu",
+                    "path": "#/visitors",
+                    "icon": "user-plus",
+                    "roles": [
+                        "Admin",
+                        "Satpam",
+                        "Warga"
+                    ]
+                },
+                {
+                    "name": "SOP Satpam",
+                    "path": "#/sop",
+                    "icon": "book-open",
+                    "roles": [
+                        "Admin",
+                        "Satpam"
+                    ]
+                }
+            ]
+        },
+        {
+            "category": "PENGATURAN",
+            "items": [
+                {
+                    "name": "Manajemen Sistem",
+                    "icon": "settings",
+                    "roles": [
+                        "Admin"
+                    ],
+                    "children": [
+                        {
+                            "name": "Kelola User",
+                            "path": "#/users",
+                            "roles": [
+                                "Admin"
+                            ]
+                        },
+                        {
+                            "name": "Kelola Role",
+                            "path": "#/roles",
+                            "roles": [
+                                "Admin"
+                            ]
+                        },
+                        {
+                            "name": "Pengaturan RT",
+                            "path": "#/settings",
+                            "roles": [
+                                "Admin"
+                            ]
+                        }
+                    ]
+                }
+            ]
+        }
+    ],
+    "mobileTabs": [
+        {
+            "name": "Home",
+            "path": "#/dashboard",
+            "icon": "layout-dashboard",
+            "roles": [
+                "Admin",
+                "Warga",
+                "Satpam",
+                "Bendahara"
+            ]
+        },
+        {
+            "name": "Security",
+            "path": "#/satpam-portal",
+            "icon": "shield-check",
+            "roles": [
+                "Satpam"
+            ]
+        },
+        {
+            "name": "Absensi",
+            "path": "#/attendance",
+            "icon": "clock",
+            "roles": [
+                "Admin",
+                "Satpam",
+                "Warga"
+            ]
+        },
+        {
+            "name": "Keuangan",
+            "path": "#/finance",
+            "icon": "banknote",
+            "roles": [
+                "Admin",
+                "Bendahara"
+            ]
+        },
+        {
+            "name": "Tagihan",
+            "path": "#/invoice-resident",
+            "icon": "wallet",
+            "roles": [
+                "Bendahara",
+                "Warga"
+            ]
+        },
+        {
+            "name": "Status Patroli",
+            "path": "#/patrol-status",
+            "icon": "activity",
+            "roles": [
+                "Satpam",
+                "Warga"
+            ]
+        },
+        {
+            "name": "CCTV",
+            "path": "#/cctv",
+            "icon": "video",
+            "roles": [
+                "Admin",
+                "Satpam",
+                "Warga"
+            ]
+        }
+    ]
+}
