@@ -1,2 +1,4 @@
 config/database.php
 config/google.php
+public/.htaccess
+.htaccess

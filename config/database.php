@@ -2,8 +2,8 @@
 
 return [
     'host' => 'localhost',
-    'dbname' => 'crudwork_php',
-    'username' => 'crudwork_faudji',
-    'password' => 't~nF,W7hF~O}HS$s',
+    'dbname' => 'app_rt',
+    'username' => 'root',
+    'password' => '',
     'charset' => 'utf8mb4'
 ];
