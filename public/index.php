@@ -14,6 +14,9 @@ spl_autoload_register(function ($class) {
     }
 });
 
+// Load Environment Variables
+Env::load(__DIR__ . '/../.env');
+
 // Load Config
 $config = require __DIR__ . '/../config/database.php';
 

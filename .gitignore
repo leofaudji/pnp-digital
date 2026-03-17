@@ -1,5 +1,4 @@
-config/database.php
-config/google.php
+.env
 public/.htaccess
 .htaccess
 public/uploads
