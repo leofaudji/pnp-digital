@@ -16,7 +16,12 @@ class Env
 
         $lines = file($path, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
         foreach ($lines as $line) {
-            if (strpos(trim($line), '#') === 0) {
+            $line = trim($line);
+            if (empty($line) || strpos($line, '#') === 0) {
+                continue;
+            }
+
+            if (strpos($line, '=') === false) {
                 continue;
             }
 
@@ -55,7 +60,13 @@ if (!function_exists('env')) {
         $value = getenv($key);
 
         if ($value === false) {
-            return $default;
+            if (isset($_ENV[$key])) {
+                $value = $_ENV[$key];
+            } elseif (isset($_SERVER[$key])) {
+                $value = $_SERVER[$key];
+            } else {
+                return $default;
+            }
         }
 
         switch (strtolower($value)) {
