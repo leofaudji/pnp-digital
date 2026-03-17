@@ -2,7 +2,7 @@
 
 Semua perubahan penting pada proyek ini akan didokumentasikan di file ini.
 
-## [1.1.0] - 2024-03-20
+## [1.1.1] - 2024-03-20
 ### Added
 - Halaman Changelog baru berbasis Markdown.
 - Tampilan versi aplikasi di bawah judul aplikasi (Login & Sidebar).
