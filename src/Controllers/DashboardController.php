@@ -184,4 +184,12 @@ class DashboardController extends BaseController
 
         $this->json($stats);
     }
+
+    public function publicStats()
+    {
+        $db = Database::getInstance();
+        $stmt = $db->query("SELECT COUNT(*) as total FROM users WHERE role_id = 4");
+        $total = $stmt->fetch()['total'] ?? 0;
+        $this->json(['total_warga' => (int)$total]);
+    }
 }

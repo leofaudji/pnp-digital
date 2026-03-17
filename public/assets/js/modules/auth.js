@@ -49,7 +49,10 @@ export const Login = async (App) => {
                     <div class="w-10 h-10 bg-brand-500 rounded-xl flex items-center justify-center shadow-lg shadow-brand-500/30">
                         <i data-lucide="shield-check" class="w-6 h-6 text-white"></i>
                     </div>
-                    <span class="text-xl font-bold tracking-tight">${appTitle}</span>
+                    <div class="flex flex-col">
+                        <span class="text-xl font-bold tracking-tight leading-none">${appTitle}</span>
+                        <a href="#/changelog" class="text-[10px] font-medium text-slate-400 mt-1 uppercase tracking-wider hover:text-brand-400 transition-colors">Versi ${settings.app_version || '1.0.0'}</a>
+                    </div>
                 </div>
             </div>
 

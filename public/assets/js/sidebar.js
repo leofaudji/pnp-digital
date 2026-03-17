@@ -69,7 +69,10 @@ const Sidebar = {
                     <div class="w-8 h-8 bg-brand-600 rounded-lg flex items-center justify-center text-white font-bold shadow-sm">
                         <i data-lucide="home" class="w-5 h-5"></i>
                     </div>
-                    <span class="text-sm font-bold text-slate-900 tracking-tight">${appTitle}</span>
+                    <div class="flex flex-col">
+                        <span class="text-sm font-bold text-slate-900 tracking-tight leading-none">${appTitle}</span>
+                        <a href="#/changelog" class="text-[10px] font-medium text-slate-500 mt-1 uppercase tracking-wider hover:text-brand-600 transition-colors">Versi ${settings.app_version || '1.0.0'}</a>
+                    </div>
                 </div>
             </div>
 

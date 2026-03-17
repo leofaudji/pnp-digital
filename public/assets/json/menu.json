@@ -258,6 +258,16 @@
                             "roles": [
                                 "Admin"
                             ]
+                        },
+                        {
+                            "name": "Changelog",
+                            "path": "#/changelog",
+                            "roles": [
+                                "Admin",
+                                "Warga",
+                                "Satpam",
+                                "Bendahara"
+                            ]
                         }
                     ]
                 }

@@ -14,6 +14,9 @@ class SettingController extends BaseController
             $result[$s['key']] = $s['value'];
         }
 
+        // Inject App Version from Env
+        $result['app_version'] = env('APP_VERSION', '1.0.0');
+
         $this->json($result);
     }
 

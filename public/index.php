@@ -15,7 +15,9 @@ spl_autoload_register(function ($class) {
 });
 
 // Load Environment Variables
-Env::load(__DIR__ . '/../.env');
+if (!Env::load(__DIR__ . '/../.env')) {
+    error_log("Env::load failed: .env file NOT found at " . realpath(__DIR__ . '/../.env'));
+}
 
 // Load Config
 $config = require __DIR__ . '/../config/database.php';
@@ -41,6 +43,8 @@ $router->add('GET', '/api/auth/google/link-callback', [GoogleAuthController::cla
 $router->add('POST', '/api/auth/google/unlink', [GoogleAuthController::class, 'unlink']);
 
 $router->add('GET', '/api/dashboard', [DashboardController::class, 'index']);
+$router->add('GET', '/api/public/stats', [DashboardController::class, 'publicStats']);
+$router->add('GET', '/api/changelog', [ChangelogController::class, 'index']);
 
 // Attendance
 $router->add('GET', '/api/attendance/history', [AttendanceController::class, 'history']);
