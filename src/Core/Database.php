@@ -18,6 +18,8 @@ class Database
             $this->pdo->exec("SET time_zone = '+07:00'");
         } catch (PDOException $e) {
             // In production, log this, don't show to user.
+            error_log("Database Connection Error: " . $e->getMessage());
+            http_response_code(500);
             die("Database Connection Error: " . $e->getMessage());
         }
     }

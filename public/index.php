@@ -5,6 +5,12 @@ if (function_exists('opcache_reset')) {
     opcache_reset();
 }
 
+// Enable error reporting for debugging production 500
+error_reporting(E_ALL);
+ini_set('display_errors', 0); // Don't show to user
+ini_set('log_errors', 1);
+ini_set('error_log', __DIR__ . '/error_log.txt'); // Log to local file
+
 // Autoloader
 spl_autoload_register(function ($class) {
     if (file_exists(__DIR__ . '/../src/Core/' . $class . '.php')) {

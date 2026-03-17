@@ -187,9 +187,14 @@ class DashboardController extends BaseController
 
     public function publicStats()
     {
-        $db = Database::getInstance();
-        $stmt = $db->query("SELECT COUNT(*) as total FROM users WHERE role_id = 4");
-        $total = $stmt->fetch()['total'] ?? 0;
-        $this->json(['total_warga' => (int)$total]);
+        try {
+            $db = Database::getInstance();
+            $stmt = $db->query("SELECT COUNT(*) as total FROM users WHERE role_id = 4");
+            $total = $stmt->fetch()['total'] ?? 0;
+            $this->json(['total_warga' => (int)$total]);
+        } catch (Exception $e) {
+            error_log("PublicStats Error: " . $e->getMessage());
+            $this->json(['error' => 'Gagal mengambil statistik', 'message' => $e->getMessage()], 500);
+        }
     }
 }
