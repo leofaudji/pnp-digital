@@ -1,11 +1,9 @@
 import API from '../api.js';
-import Sidebar from '../sidebar.js';
 
 export const PatrolStatus = async (App) => {
     document.getElementById('header-container').classList.remove('hidden');
     document.getElementById('page-title').innerText = 'Status Patroli';
     const user = await App.getUser();
-    await Sidebar.render(user);
 
     const render = async () => {
         const dashboard = await API.get('/api/dashboard');

@@ -1,6 +1,5 @@
 
 import API from '../api.js';
-import Sidebar from '../sidebar.js';
 
 export const Profile = async (App) => {
     document.getElementById('header-container').classList.remove('hidden');
@@ -8,7 +7,6 @@ export const Profile = async (App) => {
 
     // Force refresh user data to get latest house number
     const user = await App.getUser(true);
-    await Sidebar.render(user);
 
     // Theme Data
     const settings = await API.get('/api/settings') || {};

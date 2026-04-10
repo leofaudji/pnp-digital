@@ -1,12 +1,10 @@
 import API from '../api.js';
-import Sidebar from '../sidebar.js';
 
 export const Scan = async (App) => {
     document.getElementById('header-container').classList.remove('hidden');
     document.getElementById('page-title').innerText = 'Scanner Active';
     const user = await App.getUser();
     const userRole = user ? user.role : null;
-    await Sidebar.render(userRole);
 
     const scanMode = App.scanMode || 'IN';
     const modeDisplay = {
@@ -221,7 +219,6 @@ export const SatpamPortal = async (App) => {
     document.getElementById('page-title').innerText = 'Satpam Portal';
     const user = await App.getUser();
     const userRole = user ? user.role : null;
-    await Sidebar.render(userRole);
 
     // Initial Loading State
     App.container.innerHTML = `

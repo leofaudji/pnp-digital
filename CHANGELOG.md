@@ -2,6 +2,19 @@
 
 Semua perubahan penting pada proyek ini akan didokumentasikan di file ini.
 
+## [1.2.0] - 2026-04-10
+### Added
+- Sistem smart sidebar yang lebih cepat - aplikasi sekarang lebih responsif saat berpindah halaman
+- Informasi badge (notifikasi) yang update real-time tanpa perlu refresh halaman
+
+### Fixed
+- Perbaikan kecepatan loading aplikasi - navigasi antar halaman sekarang jauh lebih cepat
+- Optimasi penggunaan server untuk mengurangi beban pada sistem
+
+### Changed
+- Proses sidebar ditingkatkan untuk memberikan pengalaman yang lebih smooth dan cepat
+- Sistem notifikasi invoice dan kehadiran dioptimalkan untuk update lebih responsif
+
 ## [1.1.0] - 2024-03-20
 ### Added
 - Halaman Changelog baru berbasis Markdown.

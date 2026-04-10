@@ -1,11 +1,9 @@
 import API from '../api.js';
-import Sidebar from '../sidebar.js';
 
 export const Finance = async (App, m = null, y = null) => {
     document.getElementById('header-container').classList.remove('hidden');
     document.getElementById('page-title').innerText = 'Keuangan RT';
     const user = await App.getUser();
-    await Sidebar.render(user ? user.role : null);
 
     const now = new Date();
     const selectedMonth = m || (now.getMonth() + 1);
@@ -539,7 +537,6 @@ export const Salary = async (App, targetUserId = null) => {
     document.getElementById('header-container').classList.remove('hidden');
     document.getElementById('page-title').innerText = 'Slip Gaji';
     const user = await App.getUser();
-    await Sidebar.render(user ? user.role : null);
 
     const isAdmin = user.role_id == 1 || user.role_id == 2;
     let satpams = [];

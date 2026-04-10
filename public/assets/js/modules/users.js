@@ -1,11 +1,9 @@
 import API from '../api.js';
-import Sidebar from '../sidebar.js';
 
 export const Users = async (App) => {
     document.getElementById('header-container').classList.remove('hidden');
     document.getElementById('page-title').innerText = 'Kelola Pengguna';
     const userMe = await App.getUser();
-    await Sidebar.render(userMe ? userMe.role : null);
 
     const users = await API.get('/api/users');
     const roles = await API.get('/api/roles');
@@ -134,8 +132,9 @@ export const Users = async (App) => {
             Users(App);
             // Update sidebar in case role changed for current user
             if (id == userMe.id) {
-                const roleName = roles.find(r => r.id == data.role_id)?.name;
-                Sidebar.render(roleName || userMe.role);
+                const { default: Sidebar } = await import('../sidebar.js');
+                Sidebar.menuData = null; // Invalidate menu cache
+                // Sidebar will re-render on next navigation
             }
         } else {
             alert(res.error);

@@ -1,12 +1,10 @@
 import API from '../api.js';
-import Sidebar from '../sidebar.js';
 
 export const Visitors = async (App) => {
     document.getElementById('header-container').classList.remove('hidden');
     document.getElementById('page-title').innerText = 'Izin Tamu';
     const user = await App.getUser();
     const userRole = user ? user.role : null;
-    await Sidebar.render(user);
 
     let html = `
         <div class="mb-10 animate-in fade-in slide-in-from-bottom-4 duration-700">

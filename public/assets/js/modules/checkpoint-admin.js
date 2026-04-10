@@ -1,11 +1,9 @@
 import API from '../api.js';
-import Sidebar from '../sidebar.js';
 
 export const CheckpointAdmin = async (App) => {
     document.getElementById('header-container').classList.remove('hidden');
     document.getElementById('page-title').innerText = 'Hub Cetak QR';
     const userMe = await App.getUser();
-    await Sidebar.render(userMe ? userMe.role : null);
 
     const checkpoints = await API.get('/api/checkpoints');
 

@@ -1,12 +1,10 @@
 import API from '../api.js';
-import Sidebar from '../sidebar.js';
 
 export const Attendance = async (App) => {
     document.getElementById('header-container').classList.remove('hidden');
     document.getElementById('page-title').innerText = 'Riwayat Kehadiran';
     const user = await App.getUser();
     const settings = await API.get('/api/settings');
-    await Sidebar.render(user);
 
     const now = new Date();
     const currentMonth = now.getMonth() + 1;
@@ -473,7 +471,6 @@ export const MyQR = async (App) => {
     document.getElementById('header-container').classList.remove('hidden');
     document.getElementById('page-title').innerText = 'QR Code Saya';
     const user = await App.getUser();
-    await Sidebar.render(user);
 
     const data = await API.get('/api/user/qr');
 

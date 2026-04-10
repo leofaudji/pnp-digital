@@ -1,6 +1,15 @@
 const Sidebar = {
     container: document.getElementById('sidebar-container'),
     menuData: null,
+    cachedSettings: null,
+    cachedSettings_expiry: 0,
+    cachedBadges: {
+        unpaidCount: 0,
+        alertCount: 0,
+        unpaidUsersCount: 0,
+        expiry: 0
+    },
+    BADGE_CACHE_TTL: 30000, // 30 seconds
 
     async loadMenu() {
         if (!this.menuData) {
@@ -11,23 +20,33 @@ const Sidebar = {
         return this.menuData;
     },
 
-    async render(userData) {
-        // Handle both user object and simple role string for backward compatibility
-        if (!userData) return;
-        const user = typeof userData === 'object' ? userData : { role: userData, full_name: userData };
-        const role = String(user.role || 'User');
+    async getSettings() {
+        const now = Date.now();
+        if (this.cachedSettings && this.cachedSettings_expiry > now) {
+            return this.cachedSettings;
+        }
 
-        const data = await this.loadMenu();
+        try {
+            const settingsRes = await fetch(`${document.querySelector('meta[name="base-path"]')?.content || ''}/api/settings`);
+            this.cachedSettings = await settingsRes.json();
+            this.cachedSettings_expiry = now + 300000; // 5 minute cache
+            return this.cachedSettings;
+        } catch (e) {
+            console.error('Settings fetch failed', e);
+            return { app_title: 'RT-Digital', app_version: '1.0.0' };
+        }
+    },
 
-        const categories = data.sidebar;
-        const currentHash = window.location.hash || '#/';
+    async getBadgeCounts(force = false) {
+        const now = Date.now();
+        if (!force && this.cachedBadges.expiry > now) {
+            return {
+                unpaidCount: this.cachedBadges.unpaidCount,
+                alertCount: this.cachedBadges.alertCount,
+                unpaidUsersCount: this.cachedBadges.unpaidUsersCount
+            };
+        }
 
-        // Fetch settings for dynamic branding
-        const settingsRes = await fetch(`${document.querySelector('meta[name="base-path"]')?.content || ''}/api/settings`);
-        const settings = await settingsRes.json();
-        const appTitle = settings.app_title || 'RT-Digital';
-
-        // Fetch counts for badges independently
         let unpaidCount = 0;
         let alertCount = 0;
         let unpaidUsersCount = 0;
@@ -57,6 +76,34 @@ const Sidebar = {
                 unpaidUsersCount = usersData.count || 0;
             }
         } catch (e) { console.error('Unpaid users count fetch failed', e); }
+
+        this.cachedBadges = {
+            unpaidCount,
+            alertCount,
+            unpaidUsersCount,
+            expiry: now + this.BADGE_CACHE_TTL
+        };
+
+        return { unpaidCount, alertCount, unpaidUsersCount };
+    },
+
+    async render(userData) {
+        // Handle both user object and simple role string for backward compatibility
+        if (!userData) return;
+        const user = typeof userData === 'object' ? userData : { role: userData, full_name: userData };
+        const role = String(user.role || 'User');
+
+        const data = await this.loadMenu();
+
+        const categories = data.sidebar;
+        const currentHash = window.location.hash || '#/';
+
+        // Get cached settings
+        const settings = await this.getSettings();
+        const appTitle = settings.app_title || 'RT-Digital';
+
+        // Get cached badge counts
+        const { unpaidCount, alertCount, unpaidUsersCount } = await this.getBadgeCounts();
 
         let html = `
         <!-- Overlay for Mobile -->
@@ -116,8 +163,8 @@ const Sidebar = {
                                     <i data-lucide="${item.icon}" class="w-4 h-4"></i>
                                     <span class="ml-3">${item.name}</span>
                                     ${hasAlertInChild ? `
-                                        <span class="ml-1.5 flex h-1.5 w-1.5 rounded-full bg-rose-500 shadow-[0_0_5px_rgba(244,63,94,0.4)]"></span>
-                                    ` : ''}
+                                        <span data-badge-type="alert" class="ml-1.5 flex h-1.5 w-1.5 rounded-full bg-rose-500 shadow-[0_0_5px_rgba(244,63,94,0.4)]"></span>
+                                    ` : `<span data-badge-type="alert" class="ml-1.5 hidden"></span>`}
                                 </div>
                                 <i data-lucide="chevron-right" class="w-3.5 h-3.5 transition-transform duration-200 ${isAnyChildActive ? 'rotate-90' : ''} submenu-chevron"></i>
                             </button>
@@ -174,16 +221,16 @@ const Sidebar = {
                                 </div>
                             ` : ''}
                             ${showBadge ? `
-                                <span class="absolute right-3 flex h-2 w-2">
+                                <span data-badge-type="invoice" class="absolute right-3 flex h-2 w-2">
                                     <span class="animate-pulse-red absolute inline-flex h-full w-full rounded-full bg-rose-400 opacity-75"></span>
                                     <span class="relative inline-flex rounded-full h-2 w-2 bg-rose-500"></span>
                                 </span>
-                            ` : ''}
+                            ` : `<span data-badge-type="invoice" class="absolute right-3 flex h-2 w-2 hidden"></span>`}
                             ${showWargaBadge ? `
-                                <span class="absolute right-3 flex items-center justify-center min-w-[18px] h-[18px] px-1 bg-rose-500 text-white text-[10px] font-bold rounded-full animate-pulse-red">
+                                <span data-badge-type="warga" class="absolute right-3 flex items-center justify-center min-w-[18px] h-[18px] px-1 bg-rose-500 text-white text-[10px] font-bold rounded-full animate-pulse-red">
                                     ${unpaidUsersCount}
                                 </span>
-                            ` : ''}
+                            ` : `<span data-badge-type="warga" class="absolute right-3 hidden"></span>`}
                         </a>
                     `;
                 }
@@ -257,11 +304,11 @@ const Sidebar = {
                         <i data-lucide="${tab.icon}" class="w-5 h-5 mb-1 ${isActive ? 'fill-brand-50' : ''}"></i>
                         <span class="text-[10px] font-bold tracking-tight">${tab.name}</span>
                         ${showBadge ? `
-                            <span class="absolute top-1 right-3 flex h-2 w-2">
+                            <span data-badge-type="mobile" class="absolute top-1 right-3 flex h-2 w-2">
                                 <span class="animate-pulse-red absolute inline-flex h-full w-full rounded-full bg-rose-400 opacity-75"></span>
                                 <span class="relative inline-flex rounded-full h-2 w-2 bg-rose-500"></span>
                             </span>
-                        ` : ''}
+                        ` : `<span data-badge-type="mobile" class="absolute top-1 right-3 hidden"></span>`}
                     </a>
                 `;
             }
@@ -349,6 +396,44 @@ const Sidebar = {
             toggleBtn.onclick = toggle;
             overlay.onclick = toggle;
         }
+    },
+
+    // Update badges WITHOUT re-rendering entire sidebar
+    async updateBadges(force = false) {
+        const { unpaidCount, alertCount, unpaidUsersCount } = await this.getBadgeCounts(force);
+
+        // Update invoice badges
+        document.querySelectorAll('[data-badge-type="invoice"]').forEach(el => {
+            if (unpaidCount > 0) {
+                el.style.display = '';
+            } else {
+                el.style.display = 'none';
+            }
+        });
+
+        // Update patrol badges
+        document.querySelectorAll('[data-badge-type="alert"]').forEach(el => {
+            if (alertCount > 0) {
+                el.style.display = '';
+            } else {
+                el.style.display = 'none';
+            }
+        });
+
+        // Update warga badges
+        document.querySelectorAll('[data-badge-type="warga"]').forEach(el => {
+            if (unpaidUsersCount > 0) {
+                el.textContent = unpaidUsersCount;
+                el.style.display = '';
+            } else {
+                el.style.display = 'none';
+            }
+        });
+    },
+
+    // Invalidate badge cache to force fresh data on next updateBadges call
+    invalidateCache() {
+        this.cachedBadges.expiry = 0;
     }
 };
 
