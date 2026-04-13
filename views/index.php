@@ -53,7 +53,7 @@
     <!-- App Styles -->
     <link rel="stylesheet" href="<?= BASE_PATH ?>/assets/css/style.css?v=<?= date('Ymd') ?>">
     <!-- PWA Manifest -->
-    <link rel="manifest" href="<?= BASE_PATH ?>/manifest.json?v=<?= time() ?>">
+    <link rel="manifest" href="<?= BASE_PATH ?>/manifest.json?v=<?= app_version() ?>">
     <!-- Base Path for JS -->
     <meta name="base-path" content="<?= BASE_PATH ?>">
     <style>
