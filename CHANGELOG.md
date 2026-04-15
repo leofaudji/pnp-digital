@@ -2,9 +2,6 @@
 
 Semua perubahan penting pada proyek ini akan didokumentasikan di file ini.
 
-<<<<<<< HEAD
-## [1.1.1] - 2024-03-20
-=======
 ## [1.2.0] - 2026-04-10
 ### Added
 - Sistem smart sidebar yang lebih cepat - aplikasi sekarang lebih responsif saat berpindah halaman
@@ -19,7 +16,6 @@ Semua perubahan penting pada proyek ini akan didokumentasikan di file ini.
 - Sistem notifikasi invoice dan kehadiran dioptimalkan untuk update lebih responsif
 
 ## [1.1.0] - 2024-03-20
->>>>>>> a9e69f62a332dc81c9ce0acd7b64bf061257b7bb
 ### Added
 - Halaman Changelog baru berbasis Markdown.
 - Tampilan versi aplikasi di bawah judul aplikasi (Login & Sidebar).

@@ -1,6 +1,6 @@
 {
-    "name": "PNP Digital",
-    "short_name": "PNP Digital",
+    "name": "myPuri",
+    "short_name": "myPuri",
     "description": "Smart neighborhood management system with secure QR scanning.",
     "start_url": "./",
     "scope": "./",
