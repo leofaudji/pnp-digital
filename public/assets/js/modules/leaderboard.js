@@ -1,11 +1,9 @@
 import API from '../api.js';
-import Sidebar from '../sidebar.js';
 
 export const Leaderboard = async (App) => {
     document.getElementById('header-container').classList.remove('hidden');
     document.getElementById('page-title').innerText = 'Leaderboard';
     const user = await App.getUser();
-    await Sidebar.render(user ? user.role : null);
 
     const getRankIdentity = (points) => {
         if (points >= 500) return { label: 'Legendary Guardian', color: 'text-indigo-500', bg: 'bg-indigo-50/50', border: 'border-indigo-100', icon: 'crown', shadow: 'shadow-indigo-200/50' };

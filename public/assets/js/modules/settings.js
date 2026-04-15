@@ -1,11 +1,9 @@
 import API from '../api.js';
-import Sidebar from '../sidebar.js';
 
 export const Settings = async (App) => {
     document.getElementById('header-container').classList.remove('hidden');
     document.getElementById('page-title').innerText = 'Pengaturan Aplikasi';
     const userMe = await App.getUser();
-    await Sidebar.render(userMe ? userMe.role : null);
 
     const res = await API.get('/api/settings');
 

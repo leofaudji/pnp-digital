@@ -1,11 +1,9 @@
 import API from '../api.js';
-import Sidebar from '../sidebar.js';
 
 export const CCTV = async (App) => {
     document.getElementById('header-container').classList.remove('hidden');
     document.getElementById('page-title').innerText = 'Monitoring CCTV';
     const user = await App.getUser();
-    await Sidebar.render(user ? user.role : null);
 
     const res = await API.get('/api/cctv');
     const channels = Array.isArray(res) ? res : [];

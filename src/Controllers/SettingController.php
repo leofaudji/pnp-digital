@@ -14,8 +14,8 @@ class SettingController extends BaseController
             $result[$s['key']] = $s['value'];
         }
 
-        // Inject App Version from Env
-        $result['app_version'] = env('APP_VERSION', '1.0.0');
+        // Inject App Version from Changelog or environment
+        $result['app_version'] = app_version();
 
         $this->json($result);
     }
@@ -41,6 +41,18 @@ class SettingController extends BaseController
                      ON DUPLICATE KEY UPDATE `value` = VALUES(`value`)",
                     [$key, $value]
                 );
+
+                if ($key === 'app_title') {
+                    $manifestPath = __DIR__ . '/../../public/manifest.json';
+                    if (file_exists($manifestPath) && is_writable($manifestPath)) {
+                        $manifest = json_decode(file_get_contents($manifestPath), true);
+                        if (json_last_error() === JSON_ERROR_NONE) {
+                            $manifest['name'] = $value;
+                            $manifest['short_name'] = $value;
+                            file_put_contents($manifestPath, json_encode($manifest, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES));
+                        }
+                    }
+                }
             }
             $this->json(['success' => true, 'message' => 'Pengaturan berhasil diperbarui']);
         } catch (Exception $e) {

@@ -1,0 +1,8 @@
+[{
+  "relation": ["delegate_permission/common.handle_all_urls"],
+  "target": {
+    "namespace": "android_app",
+    "package_name": "id.web.crudworks.pnp.twa",
+    "sha256_cert_fingerprints": ["SHA256: 0D:7E:F2:95:EF:A2:A4:4A:E1:90:D3:C5:C7:66:2F:B9:61:56:0B:1F:E3:F9:94:70:7A:27:4B:1E:24:14:4A:C2"]
+  }
+}]

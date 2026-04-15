@@ -1,11 +1,9 @@
 import API from '../api.js';
-import Sidebar from '../sidebar.js';
 
 export const Roles = async (App) => {
     document.getElementById('header-container').classList.remove('hidden');
     document.getElementById('page-title').innerText = 'Kelola Role';
     const userMe = await App.getUser();
-    await Sidebar.render(userMe ? userMe.role : null);
 
     const roles = await API.get('/api/roles');
 
@@ -215,8 +213,10 @@ export const Roles = async (App) => {
                 icon: 'success'
             });
             document.getElementById('akses-modal').classList.add('hidden');
+            // Import Sidebar here to invalidate menu cache on successful update
+            const { default: Sidebar } = await import('../sidebar.js');
             Sidebar.menuData = null;
-            await Sidebar.render(App.user ? App.user.role : null);
+            // Note: Page will re-render on next navigation to show fresh menu
         } else {
             SwalCustom.fire({
                 title: 'Gagal!',

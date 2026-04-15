@@ -1,11 +1,9 @@
 import API from '../api.js';
-import Sidebar from '../sidebar.js';
 
 export const SecurityAnalytics = async (App) => {
     document.getElementById('header-container').classList.remove('hidden');
     document.getElementById('page-title').innerText = 'Analisa Keamanan AI';
     const user = await App.getUser();
-    await Sidebar.render(user ? user.role : null);
 
     const renderUI = async () => {
         const res = await API.get('/api/analytics/security');

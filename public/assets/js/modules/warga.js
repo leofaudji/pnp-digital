@@ -1,11 +1,9 @@
 import API from '../api.js';
-import Sidebar from '../sidebar.js';
 
 export const Warga = async (App) => {
     document.getElementById('header-container').classList.remove('hidden');
     document.getElementById('page-title').innerText = 'Data Warga';
     const userMe = await App.getUser();
-    await Sidebar.render(userMe ? userMe.role : null);
 
     const allUsersRaw = await API.get('/api/users');
     const allUsers = Array.isArray(allUsersRaw) ? allUsersRaw : [];

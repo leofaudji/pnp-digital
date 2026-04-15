@@ -1,5 +1,4 @@
 import API from '../api.js';
-import Sidebar from '../sidebar.js';
 
 export const Dashboard = async (App) => {
     const user = await App.getUser();
@@ -13,9 +12,6 @@ export const Dashboard = async (App) => {
     document.getElementById('user-name').innerText = user.full_name;
     document.getElementById('user-initial').innerText = user.full_name.charAt(0).toUpperCase();
     document.getElementById('page-title').innerText = 'Dashboard';
-
-    // Render Sidebar
-    await Sidebar.render(user);
 
     const stats = await API.get('/api/dashboard');
     const settings = await API.get('/api/settings');

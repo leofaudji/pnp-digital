@@ -87,3 +87,21 @@ if (!function_exists('env')) {
         return $value;
     }
 }
+
+if (!function_exists('app_version')) {
+    function app_version()
+    {
+        $changelogPath = __DIR__ . '/../../CHANGELOG.md';
+        if (file_exists($changelogPath)) {
+            $lines = file($changelogPath, FILE_IGNORE_NEW_LINES | FILE_SKIP_EMPTY_LINES);
+            foreach ($lines as $line) {
+                $line = trim($line);
+                if (preg_match('/^##\s+\[([^\]]+)\]/', $line, $matches)) {
+                    return $matches[1];
+                }
+            }
+        }
+
+        return env('APP_VERSION', '1.0.0');
+    }
+}
