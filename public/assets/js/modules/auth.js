@@ -142,7 +142,7 @@ export const Login = async (App) => {
                             <div class="flex-1 border-t border-slate-200"></div>
                         </div>
 
-                        <a href="/app-rt/api/auth/google" class="w-full py-3 bg-white border-2 border-slate-200 text-slate-700 font-semibold rounded-xl hover:bg-slate-50 hover:border-slate-300 hover:-translate-y-0.5 active:scale-[0.98] transition-all flex items-center justify-center gap-3 group">
+                        <a href="/api/auth/google" class="w-full py-3 bg-white border-2 border-slate-200 text-slate-700 font-semibold rounded-xl hover:bg-slate-50 hover:border-slate-300 hover:-translate-y-0.5 active:scale-[0.98] transition-all flex items-center justify-center gap-3 group">
                             <svg class="w-5 h-5" viewBox="0 0 24 24">
                                 <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
                                 <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
@@ -295,7 +295,7 @@ export const handleLogout = async () => {
         const res = await API.post('/api/logout');
         if (res && res.success) {
             if (window.App) window.App.user = null;
-            
+
             // Hard reload to clear all states and re-initialize the app properly
             const basePath = document.querySelector('meta[name="base-path"]')?.content || '';
             window.location.href = basePath + '/#/login';

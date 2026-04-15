@@ -406,7 +406,7 @@ export const Profile = async (App) => {
                 ? `<button id="btn-unlink-google" class="px-5 py-2.5 text-xs font-black text-rose-600 bg-rose-50 hover:bg-rose-100 border border-rose-200 rounded-2xl transition-all active:scale-95">
                                          Putuskan
                                        </button>`
-                : `<a href="/app-rt/api/auth/google/link" class="px-5 py-2.5 text-xs font-black text-white bg-slate-900 hover:bg-slate-800 rounded-2xl transition-all active:scale-95 hover:-translate-y-0.5 shadow-md shadow-slate-900/20">
+                : `<a href="/api/auth/google/link" class="px-5 py-2.5 text-xs font-black text-white bg-slate-900 hover:bg-slate-800 rounded-2xl transition-all active:scale-95 hover:-translate-y-0.5 shadow-md shadow-slate-900/20">
                                          Hubungkan
                                        </a>`
             }
