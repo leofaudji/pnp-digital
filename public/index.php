@@ -63,6 +63,7 @@ $router->add('GET', '/api/checkpoints', [AttendanceController::class, 'list_chec
 $router->add('POST', '/api/checkpoints', [AttendanceController::class, 'store_checkpoint']);
 $router->add('POST', '/api/checkpoints/update', [AttendanceController::class, 'update_checkpoint']);
 $router->add('POST', '/api/checkpoints/delete', [AttendanceController::class, 'delete_checkpoint']);
+$router->add('GET', '/api/checkpoints/print', [AttendanceController::class, 'print_checkpoint_qr']);
 $router->add('GET', '/api/users/satpam', [AttendanceController::class, 'list_satpam']);
 
 // Finance

@@ -4,6 +4,7 @@ export const CheckpointAdmin = async (App) => {
     document.getElementById('header-container').classList.remove('hidden');
     document.getElementById('page-title').innerText = 'Hub Cetak QR';
     const userMe = await App.getUser();
+    const settings = await API.get('/api/settings') || {};
 
     const checkpoints = await API.get('/api/checkpoints');
 
@@ -29,27 +30,61 @@ export const CheckpointAdmin = async (App) => {
             <!-- Dynamic Checkpoints -->
             ${checkpoints.map(cp => `
                 <div class="bg-white p-8 rounded-[2rem] border-2 border-slate-100 flex flex-col items-center relative group hover:border-brand-500/50 transition-colors">
-                    ${userMe.role_id == 1 ? `
-                        <div class="absolute top-6 right-6 flex space-x-2 opacity-0 group-hover:opacity-100 transition-opacity no-print">
+                    <div class="absolute top-6 right-6 flex space-x-2 opacity-0 group-hover:opacity-100 transition-opacity no-print">
+                        <button class="btn-print-pdf p-2 text-emerald-600 bg-emerald-50 hover:bg-emerald-100 rounded-xl transition-colors" data-id="${cp.id}" title="Cetak PDF Badge">
+                            <i data-lucide="file-down" class="w-4 h-4"></i>
+                        </button>
+                        ${userMe.role_id == 1 ? `
                             <button class="btn-edit-cp p-2 text-blue-600 bg-blue-50 hover:bg-blue-100 rounded-xl transition-colors" data-cp='${JSON.stringify(cp).replace(/'/g, "&apos;")}'>
                                 <i data-lucide="edit-3" class="w-4 h-4"></i>
                             </button>
                             <button class="btn-delete-cp p-2 text-rose-600 bg-rose-50 hover:bg-rose-100 rounded-xl transition-colors" data-id="${cp.id}">
                                 <i data-lucide="trash-2" class="w-4 h-4"></i>
                             </button>
-                        </div>
-                    ` : ''}
-                    <h3 class="text-lg font-black text-slate-900 mb-2 uppercase">${cp.name}</h3>
-                    <div id="qr-cp-${cp.id}" class="p-4 bg-white border border-slate-100 rounded-2xl mb-6"></div>
+                        ` : ''}
+                    </div>
+                    <h3 class="text-lg font-black text-slate-900 mb-2 uppercase select-all">${cp.name}</h3>
+                    <div id="qr-cp-${cp.id}" class="p-4 bg-white border border-slate-100 rounded-2xl mb-6 shadow-sm"></div>
                     <p class="text-[10px] text-slate-400 font-mono uppercase">${cp.qr_code_string}</p>
-                    <div class="mt-4 px-3 py-1 ${cp.type === 'ATTENDANCE' ? 'bg-blue-50 text-blue-600 border-blue-100/50' : 'bg-brand-50 text-brand-600 border-brand-100/50'} text-[10px] font-bold rounded-lg uppercase tracking-widest border">
+                    <div class="mt-4 px-4 py-1.5 ${cp.type === 'ATTENDANCE' ? 'bg-blue-50 text-blue-600 border-blue-100' : 'bg-brand-50 text-brand-600 border-brand-100'} text-[10px] font-black rounded-full uppercase tracking-widest border shadow-sm">
                         ${cp.type === 'ATTENDANCE' ? 'Stasiun Absensi' : 'Titik Patroli'}
                     </div>
+                    
+                    <button class="btn-print-pdf mt-6 w-full py-3 bg-slate-50 text-slate-400 text-[10px] font-black uppercase tracking-widest rounded-xl hover:bg-emerald-50 hover:text-emerald-600 transition-all no-print flex items-center justify-center border border-transparent hover:border-emerald-100" data-id="${cp.id}">
+                        <i data-lucide="download" class="w-3 h-3 mr-2"></i> Download PDF Badge
+                    </button>
                 </div>
             `).join('')}
         </div>
 
-        <!-- Modal -->
+        <style>
+            @media print {
+                .no-print, header, #sidebar-container, .fixed { display: none !important; }
+                main { padding: 0 !important; margin: 0 !important; }
+                #page-container { padding: 0 !important; }
+                body { background: white !important; }
+                .grid { 
+                    display: grid !important; 
+                    grid-template-columns: repeat(2, 1fr) !important; 
+                    gap: 30px !important; 
+                    padding: 20px !important;
+                }
+                .grid > div { 
+                    break-inside: avoid; 
+                    border: 2px solid #f1f5f9 !important; 
+                    padding: 40px !important; 
+                    border-radius: 2rem !important;
+                    box-shadow: none !important;
+                    page-break-inside: avoid;
+                }
+                .group-hover\:opacity-100 { opacity: 0 !important; }
+                h1, p { color: #0f172a !important; }
+            }
+        </style>
+    `;
+
+    // Modal and other static parts... (omitted for brevity in this tool call replaced by full logic below)
+    App.container.insertAdjacentHTML('beforeend', `
         <div id="cp-modal" class="fixed inset-0 bg-slate-900/40 backdrop-blur-sm hidden flex items-center justify-center p-4 z-50 no-print">
             <div class="bg-white w-full max-w-md rounded-[2.5rem] p-10 shadow-2xl">
                 <h3 id="cp-modal-title" class="text-2xl font-black mb-8 text-slate-900">Tambah Checkpoint</h3>
@@ -79,18 +114,7 @@ export const CheckpointAdmin = async (App) => {
                 </form>
             </div>
         </div>
-        
-        <style>
-            @media print {
-                .no-print, header, #sidebar-container, .fixed { display: none !important; }
-                main { padding: 0 !important; margin: 0 !important; }
-                #page-container { padding: 0 !important; }
-                .grid { display: grid !important; grid-template-columns: repeat(2, 1fr) !important; gap: 20px !important; }
-                .grid > div { break-inside: avoid; border: 2px solid #f1f5f9 !important; padding: 40px !important; }
-                .group-hover\:opacity-100 { opacity: 0 !important; }
-            }
-        </style>
-    `;
+    `);
 
     setTimeout(() => {
         checkpoints.forEach(cp => {
@@ -100,6 +124,15 @@ export const CheckpointAdmin = async (App) => {
     }, 100);
 
     // Event Handlers
+    document.querySelectorAll('.btn-print-pdf').forEach(btn => {
+        btn.onclick = (e) => {
+            e.stopPropagation();
+            const id = btn.dataset.id;
+            const baseUrl = document.querySelector('meta[name="base-path"]')?.getAttribute('content') || '';
+            window.open(`${baseUrl}/api/checkpoints/print?id=${id}`, '_blank');
+        };
+    });
+
     if (userMe.role_id == 1) {
         document.getElementById('btn-add-checkpoint').onclick = () => showCPModal();
         document.getElementById('btn-close-cp').onclick = () => document.getElementById('cp-modal').classList.add('hidden');

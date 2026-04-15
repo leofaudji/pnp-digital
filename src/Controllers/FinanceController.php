@@ -245,12 +245,12 @@ class FinanceController extends BaseController
             $baseSalary = intval($settings['salary_satpam'] ?? 2000000);
 
             $stmtAtt = $db->query("
-                SELECT COUNT(DISTINCT DATE(timestamp)) as total_days 
+                SELECT COUNT(DISTINCT date) as total_days 
                 FROM attendance 
                 WHERE user_id = ? 
-                AND type = 'IN' 
-                AND MONTH(timestamp) = ? 
-                AND YEAR(timestamp) = ?
+                AND clock_in IS NOT NULL 
+                AND MONTH(date) = ? 
+                AND YEAR(date) = ?
             ", [$targetUserId, $month, $year]);
             $attendanceContent = $stmtAtt->fetch();
             $totalDays = intval($attendanceContent['total_days'] ?? 0);
@@ -279,10 +279,10 @@ class FinanceController extends BaseController
         // We consider entry late if timestamp time > shift start time
         // Note: Simple logic based on shift threshold 14:00 (Pagi < 14:00, Malam >= 14:00)
         $stmtLate = $db->query("
-            SELECT timestamp 
+            SELECT clock_in as timestamp 
             FROM attendance 
-            WHERE user_id = ? AND type = 'IN' 
-            AND MONTH(timestamp) = ? AND YEAR(timestamp) = ?
+            WHERE user_id = ? AND clock_in IS NOT NULL 
+            AND MONTH(date) = ? AND YEAR(date) = ?
         ", [$targetUserId, $month, $year]);
         $attendances = $stmtLate->fetchAll();
 
@@ -295,16 +295,25 @@ class FinanceController extends BaseController
                 $lateCount++;
         }
 
-        // 2. Calculate Patrol Activity (Unique checkpoints scanned)
+        // 2. Calculate Patrol Activity (Using daily_patrol_logs as checkpoint_logs doesn't exist)
         $stmtPatrol = $db->query("
-            SELECT COUNT(id) as total_scans, COUNT(DISTINCT DATE(timestamp)) as patrol_days
-            FROM checkpoint_logs 
+            SELECT scans, date
+            FROM daily_patrol_logs 
             WHERE user_id = ? 
-            AND MONTH(timestamp) = ? AND YEAR(timestamp) = ?
+            AND MONTH(date) = ? AND YEAR(date) = ?
         ", [$targetUserId, $month, $year]);
-        $patrolData = $stmtPatrol->fetch();
-        $totalScans = intval($patrolData['total_scans'] ?? 0);
-        $patrolDays = intval($patrolData['patrol_days'] ?? 0);
+        $patrolLogs = $stmtPatrol->fetchAll();
+
+        $totalScans = 0;
+        $patrolDaysSet = [];
+        foreach ($patrolLogs as $pLog) {
+            $scans = json_decode($pLog['scans'], true) ?: [];
+            $totalScans += count($scans);
+            if (count($scans) > 0) {
+                $patrolDaysSet[$pLog['date']] = true;
+            }
+        }
+        $patrolDays = count($patrolDaysSet);
 
         // 3. Generate Evaluation
         $stars = 5;

@@ -443,6 +443,171 @@ class AttendanceController extends BaseController
         $this->json(['count' => $alerts]);
     }
 
+    public function print_checkpoint_qr()
+    {
+        require_once __DIR__ . '/../Libs/fpdf/fpdf.php';
+        require_once __DIR__ . '/../Libs/CustomPDF.php';
+
+        $id = $_GET['id'] ?? null;
+        if (!$id)
+            die('ID Checkpoint diperlukan.');
+
+        $db = Database::getInstance();
+
+        // 1. Fetch Checkpoint
+        $stmt = $db->query("SELECT * FROM checkpoints WHERE id = ?", [$id]);
+        $checkpoint = $stmt->fetch();
+        if (!$checkpoint)
+            die('Checkpoint tidak ditemukan.');
+
+        // 2. Fetch Settings
+        $stmtSettings = $db->query("SELECT * FROM settings");
+        $settingsRaw = $stmtSettings->fetchAll();
+        $settings = [];
+        foreach ($settingsRaw as $s) {
+            $settings[$s['key']] = $s['value'];
+        }
+
+        $rtName = $settings['rt_name'] ?? 'LINGKUNGAN myPuri';
+        $rtAddress = $settings['rt_address'] ?? 'Unit Lingkungan Masyarakat';
+        $rtHead = $settings['rt_head'] ?? 'Ketua RT';
+        $appLogo = $settings['app_logo'] ?? null;
+        $appTitle = $settings['app_title'] ?? 'myPuri';
+
+        // 3. Generate PDF
+        $pdf = new CustomPDF('P', 'mm', 'A4', $rtName, $rtAddress, $appLogo);
+        $pdf->showDefaultHeader = false; // MODERN: Remove Kop Surat
+        $pdf->AliasNbPages();
+        $pdf->AddPage();
+
+        // BRAND SIDEBAR ACCENT
+        $pdf->SetFillColor(0, 112, 243); // Premium Blue
+        $pdf->Rect(0, 0, 8, 297, 'F');
+
+        // SECURITY WATERMARK (Subtle)
+        $pdf->SetFont('Helvetica', 'B', 40);
+        $pdf->SetTextColor(245, 245, 245);
+        $pdf->RotatedText(35, 190, 'myPuri SECURE DOCUMENT', 45);
+        $pdf->RotatedText(35, 260, 'myPuri SECURE DOCUMENT', 45);
+        $pdf->RotatedText(35, 120, 'myPuri SECURE DOCUMENT', 45);
+        $pdf->RotatedText(35, 50, 'myPuri SECURE DOCUMENT', 45);
+
+        // MODERN HEADER
+        $pdf->SetY(13);
+        $pdf->SetFont('Helvetica', 'B', 24);
+        $pdf->SetTextColor(0, 112, 243); // Premium Blue
+        $pdf->Cell(0, 10, strtoupper($appTitle), 0, 1, 'C');
+
+        $jargons = [
+            "Digitalizing Home Security, One Scan at a Time.",
+            "Security in Your Pocket, Peace in Your Home.",
+            "Modern Patrol for a Safer Environment.",
+            "Smart Guarding, Smarter Living.",
+            "Advanced Protection for the Modern Neighborhood."
+        ];
+        $randomJargon = $jargons[array_rand($jargons)];
+
+        $pdf->SetFont('Helvetica', 'I', 10);
+        $pdf->SetTextColor(100, 116, 139);
+        $pdf->Cell(0, 5, $randomJargon, 0, 1, 'C');
+
+        $pdf->Ln(5);
+        $pdf->SetDrawColor(226, 232, 240);
+        $pdf->Line(20, $pdf->GetY(), 190, $pdf->GetY());
+        $pdf->Ln(10);
+
+        // Badge-like container in the middle of A4
+        $pdf->SetDrawColor(226, 232, 240);
+        $pdf->SetFillColor(248, 250, 252);
+        $pdf->RoundedRect(25, 40, 160, 140, 5, 'DF');
+
+        // Checkpoint Name (Big)
+        $pdf->SetY(50);
+        $pdf->SetFont('Helvetica', 'B', 24);
+        $pdf->SetTextColor(15, 23, 42);
+        $pdf->Cell(0, 15, strtoupper($checkpoint['name']), 0, 1, 'C');
+
+        // QR Code Image
+        // Use high-res Google Charts API or similar for QR generation
+        $qrData = $checkpoint['qr_code_string'];
+        $qrUrl = "https://api.qrserver.com/v1/create-qr-code/?size=500x500&data=" . urlencode($qrData);
+
+        // Draw QR
+        $pdf->Image($qrUrl, 75, 70, 60, 60, 'PNG');
+
+        // QR ID Text
+        $pdf->SetY(135);
+        $pdf->SetFont('Helvetica', '', 10);
+        $pdf->SetTextColor(100, 116, 139);
+        $pdf->Cell(0, 5, 'ID: ' . $qrData, 0, 1, 'C');
+
+        // Instructions
+        $pdf->SetY(150);
+        $pdf->SetFont('Helvetica', 'B', 12);
+        $pdf->SetTextColor(0, 112, 243);
+        $pdf->Cell(0, 8, 'PINDAI SETIAP PATROLI RUTIN', 0, 1, 'C');
+
+        $pdf->SetFont('Helvetica', 'I', 8);
+        $pdf->SetTextColor(148, 163, 184);
+        $pdf->Cell(0, 5, 'Gunakan aplikasi ' . $appTitle . ' untuk memindai kode di atas.', 0, 1, 'C');
+
+        // SAFETY SOP SECTION
+        $pdf->SetY(185);
+        $pdf->SetX(30);
+        $pdf->SetFont('Helvetica', 'B', 9);
+        $pdf->SetTextColor(51, 65, 85);
+        $pdf->Cell(0, 8, 'PROSEDUR PATROLI KEAMANAN:', 0, 1, 'L');
+
+        $pdf->SetFont('Helvetica', '', 8);
+        $pdf->SetTextColor(71, 85, 105);
+        $sop = [
+            "1. Periksa kondisi fisik & keamanan di sekitar area titik kontrol.",
+            "2. Gunakan smartphone untuk memindai kode QR pada titik ini.",
+            "3. Pastikan status 'Berhasil' muncul & tambahkan catatan jika perlu.",
+            "4. Lanjutkan patroli ke titik berikutnya sesuai rute terjadwal."
+        ];
+        foreach ($sop as $line) {
+            $pdf->SetX(30);
+            $pdf->Cell(0, 5, $line, 0, 1, 'L');
+        }
+
+        $pdf->Ln(10);
+        $pdf->SetFont('Helvetica', 'I', 10);
+        $pdf->SetTextColor(71, 85, 105);
+        $quotes = [
+            '"Keamanan bukanlah sebuah produk, melainkan sebuah proses yang berkelanjutan."',
+            '"Kewaspadaan kita hari ini adalah kedamaian kita di hari esok."',
+            '"Lingkungan yang aman adalah pondasi utama kebahagiaan setiap keluarga."',
+            '"Ketertiban dimulai dari diri sendiri, keamanan dijaga bersama-sama."'
+        ];
+        $randomQuote = $quotes[array_rand($quotes)];
+        $pdf->MultiCell(0, 6, $randomQuote, 0, 'C');
+
+        // EMERGENCY HOTLINE BOX
+        $pdf->SetY(240);
+        $pdf->SetX(110);
+        $pdf->SetFillColor(254, 242, 242); // Light red
+        $pdf->SetDrawColor(252, 165, 165); // Red border
+        $pdf->RoundedRect(110, 240, 75, 25, 3, 'DF');
+
+        $pdf->SetY(242);
+        $pdf->SetX(115);
+        $pdf->SetFont('Helvetica', 'B', 8);
+        $pdf->SetTextColor(153, 27, 27);
+        $pdf->Cell(0, 5, 'LAYANAN DARURAT (EMERGENCY):', 0, 1);
+
+        $pdf->SetX(115);
+        $pdf->SetFont('Helvetica', '', 8);
+        $pdf->Cell(0, 4, '- Polisi / Keamanan: 110', 0, 1);
+        $pdf->SetX(115);
+        $pdf->Cell(0, 4, '- Ambulans / Medis: 118', 0, 1);
+        $pdf->SetX(115);
+        $pdf->Cell(0, 4, '- Pemadam Kebakaran: 113', 0, 1);
+
+
+        $pdf->Output('I', 'QR_Checkpoint_' . str_replace(' ', '_', $checkpoint['name']) . '.pdf');
+    }
+
     private function fixSchema($db)
     {
         try {

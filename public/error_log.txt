@@ -1,0 +1,117 @@
+[15-Apr-2026 15:29:00 Asia/Jakarta] PHP Fatal error:  Uncaught PDOException: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'timestamp' in 'field list' in D:\laragon\www\app-rt\src\Core\Database.php:42
+Stack trace:
+#0 D:\laragon\www\app-rt\src\Core\Database.php(42): PDO->prepare('\r\n             ...')
+#1 D:\laragon\www\app-rt\src\Controllers\FinanceController.php(247): Database->query('\r\n             ...', Array)
+#2 D:\laragon\www\app-rt\src\Core\Router.php(72): FinanceController->print_salary_slip()
+#3 D:\laragon\www\app-rt\public\index.php(205): Router->run()
+#4 {main}
+  thrown in D:\laragon\www\app-rt\src\Core\Database.php on line 42
+[15-Apr-2026 15:31:22 Asia/Jakarta] PHP Fatal error:  Uncaught PDOException: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'timestamp' in 'field list' in D:\laragon\www\app-rt\src\Core\Database.php:42
+Stack trace:
+#0 D:\laragon\www\app-rt\src\Core\Database.php(42): PDO->prepare('\r\n             ...')
+#1 D:\laragon\www\app-rt\src\Controllers\FinanceController.php(247): Database->query('\r\n             ...', Array)
+#2 D:\laragon\www\app-rt\src\Core\Router.php(72): FinanceController->print_salary_slip()
+#3 D:\laragon\www\app-rt\public\index.php(205): Router->run()
+#4 {main}
+  thrown in D:\laragon\www\app-rt\src\Core\Database.php on line 42
+[15-Apr-2026 15:31:28 Asia/Jakarta] PHP Fatal error:  Uncaught PDOException: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'timestamp' in 'field list' in D:\laragon\www\app-rt\src\Core\Database.php:42
+Stack trace:
+#0 D:\laragon\www\app-rt\src\Core\Database.php(42): PDO->prepare('\r\n             ...')
+#1 D:\laragon\www\app-rt\src\Controllers\FinanceController.php(247): Database->query('\r\n             ...', Array)
+#2 D:\laragon\www\app-rt\src\Core\Router.php(72): FinanceController->print_salary_slip()
+#3 D:\laragon\www\app-rt\public\index.php(205): Router->run()
+#4 {main}
+  thrown in D:\laragon\www\app-rt\src\Core\Database.php on line 42
+[15-Apr-2026 15:31:33 Asia/Jakarta] PHP Fatal error:  Uncaught PDOException: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'timestamp' in 'field list' in D:\laragon\www\app-rt\src\Core\Database.php:42
+Stack trace:
+#0 D:\laragon\www\app-rt\src\Core\Database.php(42): PDO->prepare('\r\n             ...')
+#1 D:\laragon\www\app-rt\src\Controllers\FinanceController.php(247): Database->query('\r\n             ...', Array)
+#2 D:\laragon\www\app-rt\src\Core\Router.php(72): FinanceController->print_salary_slip()
+#3 D:\laragon\www\app-rt\public\index.php(205): Router->run()
+#4 {main}
+  thrown in D:\laragon\www\app-rt\src\Core\Database.php on line 42
+[15-Apr-2026 15:35:07 Asia/Jakarta] PHP Warning:  include(D:\laragon\www\app-rt\src\Libs\fpdf/font/courierb.php): Failed to open stream: No such file or directory in D:\laragon\www\app-rt\src\Libs\fpdf\fpdf.php on line 1137
+[15-Apr-2026 15:35:07 Asia/Jakarta] PHP Warning:  include(): Failed opening 'D:\laragon\www\app-rt\src\Libs\fpdf/font/courierb.php' for inclusion (include_path='.;D:/laragon/etc/php/pear') in D:\laragon\www\app-rt\src\Libs\fpdf\fpdf.php on line 1137
+[15-Apr-2026 15:35:07 Asia/Jakarta] PHP Fatal error:  Uncaught Exception: FPDF error: Could not include font definition file: D:\laragon\www\app-rt\src\Libs\fpdf/font/courierb.php in D:\laragon\www\app-rt\src\Libs\fpdf\fpdf.php:267
+Stack trace:
+#0 D:\laragon\www\app-rt\src\Libs\fpdf\fpdf.php(1139): FPDF->Error('Could not inclu...')
+#1 D:\laragon\www\app-rt\src\Libs\fpdf\fpdf.php(461): FPDF->_loadfont('D:\\laragon\\www\\...')
+#2 D:\laragon\www\app-rt\src\Libs\fpdf\fpdf.php(510): FPDF->AddFont('courier', 'B')
+#3 D:\laragon\www\app-rt\src\Controllers\AttendanceController.php(507): FPDF->SetFont('courier', 'B', 10)
+#4 D:\laragon\www\app-rt\src\Core\Router.php(72): AttendanceController->print_checkpoint_qr()
+#5 D:\laragon\www\app-rt\public\index.php(206): Router->run()
+#6 {main}
+  thrown in D:\laragon\www\app-rt\src\Libs\fpdf\fpdf.php on line 267
+[15-Apr-2026 15:35:14 Asia/Jakarta] PHP Warning:  include(D:\laragon\www\app-rt\src\Libs\fpdf/font/courierb.php): Failed to open stream: No such file or directory in D:\laragon\www\app-rt\src\Libs\fpdf\fpdf.php on line 1137
+[15-Apr-2026 15:35:14 Asia/Jakarta] PHP Warning:  include(): Failed opening 'D:\laragon\www\app-rt\src\Libs\fpdf/font/courierb.php' for inclusion (include_path='.;D:/laragon/etc/php/pear') in D:\laragon\www\app-rt\src\Libs\fpdf\fpdf.php on line 1137
+[15-Apr-2026 15:35:14 Asia/Jakarta] PHP Fatal error:  Uncaught Exception: FPDF error: Could not include font definition file: D:\laragon\www\app-rt\src\Libs\fpdf/font/courierb.php in D:\laragon\www\app-rt\src\Libs\fpdf\fpdf.php:267
+Stack trace:
+#0 D:\laragon\www\app-rt\src\Libs\fpdf\fpdf.php(1139): FPDF->Error('Could not inclu...')
+#1 D:\laragon\www\app-rt\src\Libs\fpdf\fpdf.php(461): FPDF->_loadfont('D:\\laragon\\www\\...')
+#2 D:\laragon\www\app-rt\src\Libs\fpdf\fpdf.php(510): FPDF->AddFont('courier', 'B')
+#3 D:\laragon\www\app-rt\src\Controllers\AttendanceController.php(507): FPDF->SetFont('courier', 'B', 10)
+#4 D:\laragon\www\app-rt\src\Core\Router.php(72): AttendanceController->print_checkpoint_qr()
+#5 D:\laragon\www\app-rt\public\index.php(206): Router->run()
+#6 {main}
+  thrown in D:\laragon\www\app-rt\src\Libs\fpdf\fpdf.php on line 267
+[15-Apr-2026 15:35:22 Asia/Jakarta] PHP Warning:  include(D:\laragon\www\app-rt\src\Libs\fpdf/font/courierb.php): Failed to open stream: No such file or directory in D:\laragon\www\app-rt\src\Libs\fpdf\fpdf.php on line 1137
+[15-Apr-2026 15:35:22 Asia/Jakarta] PHP Warning:  include(): Failed opening 'D:\laragon\www\app-rt\src\Libs\fpdf/font/courierb.php' for inclusion (include_path='.;D:/laragon/etc/php/pear') in D:\laragon\www\app-rt\src\Libs\fpdf\fpdf.php on line 1137
+[15-Apr-2026 15:35:22 Asia/Jakarta] PHP Fatal error:  Uncaught Exception: FPDF error: Could not include font definition file: D:\laragon\www\app-rt\src\Libs\fpdf/font/courierb.php in D:\laragon\www\app-rt\src\Libs\fpdf\fpdf.php:267
+Stack trace:
+#0 D:\laragon\www\app-rt\src\Libs\fpdf\fpdf.php(1139): FPDF->Error('Could not inclu...')
+#1 D:\laragon\www\app-rt\src\Libs\fpdf\fpdf.php(461): FPDF->_loadfont('D:\\laragon\\www\\...')
+#2 D:\laragon\www\app-rt\src\Libs\fpdf\fpdf.php(510): FPDF->AddFont('courier', 'B')
+#3 D:\laragon\www\app-rt\src\Controllers\AttendanceController.php(507): FPDF->SetFont('courier', 'B', 10)
+#4 D:\laragon\www\app-rt\src\Core\Router.php(72): AttendanceController->print_checkpoint_qr()
+#5 D:\laragon\www\app-rt\public\index.php(206): Router->run()
+#6 {main}
+  thrown in D:\laragon\www\app-rt\src\Libs\fpdf\fpdf.php on line 267
+[15-Apr-2026 15:46:12 Asia/Jakarta] PHP Fatal error:  Uncaught PDOException: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'app_rt.checkpoint_logs' doesn't exist in D:\laragon\www\app-rt\src\Core\Database.php:42
+Stack trace:
+#0 D:\laragon\www\app-rt\src\Core\Database.php(42): PDO->prepare('\r\n            S...')
+#1 D:\laragon\www\app-rt\src\Controllers\FinanceController.php(299): Database->query('\r\n            S...', Array)
+#2 D:\laragon\www\app-rt\src\Core\Router.php(72): FinanceController->print_salary_slip()
+#3 D:\laragon\www\app-rt\public\index.php(206): Router->run()
+#4 {main}
+  thrown in D:\laragon\www\app-rt\src\Core\Database.php on line 42
+[15-Apr-2026 15:57:43 Asia/Jakarta] PHP Fatal error:  Uncaught Exception: FPDF error: No page has been added yet in D:\laragon\www\app-rt\src\Libs\fpdf\fpdf.php:267
+Stack trace:
+#0 D:\laragon\www\app-rt\src\Libs\fpdf\fpdf.php(1463): FPDF->Error('No page has bee...')
+#1 D:\laragon\www\app-rt\src\Libs\fpdf\fpdf.php(440): FPDF->_out('0.00 841.89 22....')
+#2 D:\laragon\www\app-rt\src\Controllers\AttendanceController.php(485): FPDF->Rect(0, 0, 8, 297, 'F')
+#3 D:\laragon\www\app-rt\src\Core\Router.php(72): AttendanceController->print_checkpoint_qr()
+#4 D:\laragon\www\app-rt\public\index.php(206): Router->run()
+#5 {main}
+  thrown in D:\laragon\www\app-rt\src\Libs\fpdf\fpdf.php on line 267
+[15-Apr-2026 16:04:06 Asia/Jakarta] PHP Fatal error:  Uncaught Exception: FPDF error: Not a PNG file: D:\laragon\www\app-rt\src\Controllers/../../public/assets/images/google-play-badge.png in D:\laragon\www\app-rt\src\Libs\fpdf\fpdf.php:267
+Stack trace:
+#0 D:\laragon\www\app-rt\src\Libs\fpdf\fpdf.php(1286): FPDF->Error('Not a PNG file:...')
+#1 D:\laragon\www\app-rt\src\Libs\fpdf\fpdf.php(1277): FPDF->_parsepngstream(Resource id #20, 'D:\\laragon\\www\\...')
+#2 D:\laragon\www\app-rt\src\Libs\fpdf\fpdf.php(890): FPDF->_parsepng('D:\\laragon\\www\\...')
+#3 D:\laragon\www\app-rt\src\Controllers\AttendanceController.php(557): FPDF->Image('D:\\laragon\\www\\...', 87.5, 162, 35)
+#4 D:\laragon\www\app-rt\src\Core\Router.php(72): AttendanceController->print_checkpoint_qr()
+#5 D:\laragon\www\app-rt\public\index.php(206): Router->run()
+#6 {main}
+  thrown in D:\laragon\www\app-rt\src\Libs\fpdf\fpdf.php on line 267
+[15-Apr-2026 16:04:10 Asia/Jakarta] PHP Fatal error:  Uncaught Exception: FPDF error: Not a PNG file: D:\laragon\www\app-rt\src\Controllers/../../public/assets/images/google-play-badge.png in D:\laragon\www\app-rt\src\Libs\fpdf\fpdf.php:267
+Stack trace:
+#0 D:\laragon\www\app-rt\src\Libs\fpdf\fpdf.php(1286): FPDF->Error('Not a PNG file:...')
+#1 D:\laragon\www\app-rt\src\Libs\fpdf\fpdf.php(1277): FPDF->_parsepngstream(Resource id #20, 'D:\\laragon\\www\\...')
+#2 D:\laragon\www\app-rt\src\Libs\fpdf\fpdf.php(890): FPDF->_parsepng('D:\\laragon\\www\\...')
+#3 D:\laragon\www\app-rt\src\Controllers\AttendanceController.php(557): FPDF->Image('D:\\laragon\\www\\...', 87.5, 162, 35)
+#4 D:\laragon\www\app-rt\src\Core\Router.php(72): AttendanceController->print_checkpoint_qr()
+#5 D:\laragon\www\app-rt\public\index.php(206): Router->run()
+#6 {main}
+  thrown in D:\laragon\www\app-rt\src\Libs\fpdf\fpdf.php on line 267
+[15-Apr-2026 16:05:43 Asia/Jakarta] PHP Fatal error:  Uncaught Error: Call to undefined method CustomPDF::Polygon() in D:\laragon\www\app-rt\src\Controllers\AttendanceController.php:574
+Stack trace:
+#0 D:\laragon\www\app-rt\src\Core\Router.php(72): AttendanceController->print_checkpoint_qr()
+#1 D:\laragon\www\app-rt\public\index.php(206): Router->run()
+#2 {main}
+  thrown in D:\laragon\www\app-rt\src\Controllers\AttendanceController.php on line 574
+[15-Apr-2026 16:05:51 Asia/Jakarta] PHP Fatal error:  Uncaught Error: Call to undefined method CustomPDF::Polygon() in D:\laragon\www\app-rt\src\Controllers\AttendanceController.php:574
+Stack trace:
+#0 D:\laragon\www\app-rt\src\Core\Router.php(72): AttendanceController->print_checkpoint_qr()
+#1 D:\laragon\www\app-rt\public\index.php(206): Router->run()
+#2 {main}
+  thrown in D:\laragon\www\app-rt\src\Controllers\AttendanceController.php on line 574
