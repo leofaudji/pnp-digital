@@ -115,3 +115,26 @@ Stack trace:
 #1 D:\laragon\www\app-rt\public\index.php(206): Router->run()
 #2 {main}
   thrown in D:\laragon\www\app-rt\src\Controllers\AttendanceController.php on line 574
+[16-Apr-2026 11:08:49 Asia/Jakarta] PHP Parse error:  syntax error, unexpected token "public" in D:\laragon\www\app-rt\src\Controllers\SecurityAnalyticsController.php on line 94
+[16-Apr-2026 11:08:53 Asia/Jakarta] PHP Parse error:  syntax error, unexpected token "public" in D:\laragon\www\app-rt\src\Controllers\SecurityAnalyticsController.php on line 94
+[16-Apr-2026 11:08:53 Asia/Jakarta] PHP Parse error:  syntax error, unexpected token "public" in D:\laragon\www\app-rt\src\Controllers\SecurityAnalyticsController.php on line 94
+[16-Apr-2026 11:08:53 Asia/Jakarta] PHP Parse error:  syntax error, unexpected token "public" in D:\laragon\www\app-rt\src\Controllers\SecurityAnalyticsController.php on line 94
+[16-Apr-2026 11:08:53 Asia/Jakarta] PHP Parse error:  syntax error, unexpected token "public" in D:\laragon\www\app-rt\src\Controllers\SecurityAnalyticsController.php on line 94
+[16-Apr-2026 11:08:58 Asia/Jakarta] PHP Parse error:  syntax error, unexpected token "public" in D:\laragon\www\app-rt\src\Controllers\SecurityAnalyticsController.php on line 94
+[16-Apr-2026 11:08:58 Asia/Jakarta] PHP Parse error:  syntax error, unexpected token "public" in D:\laragon\www\app-rt\src\Controllers\SecurityAnalyticsController.php on line 94
+[16-Apr-2026 11:08:58 Asia/Jakarta] PHP Parse error:  syntax error, unexpected token "public" in D:\laragon\www\app-rt\src\Controllers\SecurityAnalyticsController.php on line 94
+[16-Apr-2026 11:08:58 Asia/Jakarta] PHP Parse error:  syntax error, unexpected token "public" in D:\laragon\www\app-rt\src\Controllers\SecurityAnalyticsController.php on line 94
+[16-Apr-2026 11:09:01 Asia/Jakarta] PHP Parse error:  syntax error, unexpected token "public" in D:\laragon\www\app-rt\src\Controllers\SecurityAnalyticsController.php on line 94
+[16-Apr-2026 11:09:01 Asia/Jakarta] PHP Parse error:  syntax error, unexpected token "public" in D:\laragon\www\app-rt\src\Controllers\SecurityAnalyticsController.php on line 94
+[16-Apr-2026 11:09:01 Asia/Jakarta] PHP Parse error:  syntax error, unexpected token "public" in D:\laragon\www\app-rt\src\Controllers\SecurityAnalyticsController.php on line 94
+[16-Apr-2026 11:09:01 Asia/Jakarta] PHP Parse error:  syntax error, unexpected token "public" in D:\laragon\www\app-rt\src\Controllers\SecurityAnalyticsController.php on line 94
+[16-Apr-2026 11:09:06 Asia/Jakarta] PHP Parse error:  syntax error, unexpected token "public" in D:\laragon\www\app-rt\src\Controllers\SecurityAnalyticsController.php on line 94
+[16-Apr-2026 11:09:10 Asia/Jakarta] PHP Parse error:  syntax error, unexpected token "public" in D:\laragon\www\app-rt\src\Controllers\SecurityAnalyticsController.php on line 94
+[16-Apr-2026 11:09:17 Asia/Jakarta] PHP Parse error:  syntax error, unexpected token "public" in D:\laragon\www\app-rt\src\Controllers\SecurityAnalyticsController.php on line 94
+[16-Apr-2026 11:09:33 Asia/Jakarta] PHP Parse error:  syntax error, unexpected token "public" in D:\laragon\www\app-rt\src\Controllers\SecurityAnalyticsController.php on line 94
+[16-Apr-2026 11:09:33 Asia/Jakarta] PHP Parse error:  syntax error, unexpected token "public" in D:\laragon\www\app-rt\src\Controllers\SecurityAnalyticsController.php on line 94
+[16-Apr-2026 11:09:33 Asia/Jakarta] PHP Parse error:  syntax error, unexpected token "public" in D:\laragon\www\app-rt\src\Controllers\SecurityAnalyticsController.php on line 94
+[16-Apr-2026 11:10:22 Asia/Jakarta] PHP Parse error:  syntax error, unexpected token "public" in D:\laragon\www\app-rt\src\Controllers\SecurityAnalyticsController.php on line 94
+[16-Apr-2026 11:10:27 Asia/Jakarta] PHP Parse error:  syntax error, unexpected token "public" in D:\laragon\www\app-rt\src\Controllers\SecurityAnalyticsController.php on line 94
+[16-Apr-2026 11:10:28 Asia/Jakarta] PHP Parse error:  syntax error, unexpected token "public" in D:\laragon\www\app-rt\src\Controllers\SecurityAnalyticsController.php on line 94
+[16-Apr-2026 11:10:31 Asia/Jakarta] PHP Parse error:  syntax error, unexpected token "public" in D:\laragon\www\app-rt\src\Controllers\SecurityAnalyticsController.php on line 94

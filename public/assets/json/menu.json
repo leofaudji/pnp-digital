@@ -208,6 +208,15 @@
                     ]
                 },
                 {
+                    "name": "Kontribusi Satpam",
+                    "path": "#/security-contributions",
+                    "icon": "calendar-days",
+                    "roles": [
+                        "Admin",
+                        "Bendahara"
+                    ]
+                },
+                {
                     "name": "Buku Tamu",
                     "path": "#/visitors",
                     "icon": "user-plus",

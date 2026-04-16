@@ -2,3 +2,4 @@
 public/.htaccess
 .htaccess
 public/uploads
+public/error_log.txt

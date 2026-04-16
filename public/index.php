@@ -160,6 +160,7 @@ $router->add('POST', '/api/meetings/summarize', [MeetingController::class, 'summ
 $router->add('POST', '/api/chatbot/query', [ChatbotController::class, 'query']);
 $router->add('GET', '/api/analytics/demographics', [new DemographicsController(), 'getSummary']);
 $router->add('GET', '/api/analytics/security', [new SecurityAnalyticsController(), 'getPatterns']);
+$router->add('GET', '/api/analytics/contributions', [new SecurityAnalyticsController(), 'getContributions']);
 
 // Database Backup & Restore
 $router->add('GET', '/api/backup/export', [BackupController::class, 'export']);

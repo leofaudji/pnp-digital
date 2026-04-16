@@ -23,6 +23,7 @@ import { Chatbot } from './modules/chatbot.js';
 import { Demographics } from './modules/demographics.js';
 import { CCTV } from './modules/cctv.js';
 import { Changelog } from './modules/changelog.js';
+import { SecurityContributions } from './modules/security-contributions.js';
 
 const App = {
     routes: {},
@@ -164,6 +165,7 @@ App.addRoute('#/profile', Profile);
 App.addRoute('#/minutes', Minutes);
 App.addRoute('#/demographics', Demographics);
 App.addRoute('#/security-analytics', SecurityAnalytics);
+App.addRoute('#/security-contributions', SecurityContributions);
 App.addRoute('#/cctv', CCTV);
 App.addRoute('#/changelog', Changelog);
 
