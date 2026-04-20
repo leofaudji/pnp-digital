@@ -521,8 +521,14 @@ class AttendanceController extends BaseController
         $pdf->SetFillColor(248, 250, 252);
         $pdf->RoundedRect(25, 40, 160, 140, 5, 'DF');
 
+        // RT/Unit Name
+        $pdf->SetY(46);
+        $pdf->SetFont('Helvetica', 'B', 9);
+        $pdf->SetTextColor(100, 116, 139);
+        $pdf->Cell(0, 5, strtoupper($rtName), 0, 1, 'C');
+
         // Checkpoint Name (Big)
-        $pdf->SetY(50);
+        $pdf->SetY(52);
         $pdf->SetFont('Helvetica', 'B', 24);
         $pdf->SetTextColor(15, 23, 42);
         $pdf->Cell(0, 15, strtoupper($checkpoint['name']), 0, 1, 'C');

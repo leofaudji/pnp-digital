@@ -43,6 +43,7 @@ export const CheckpointAdmin = async (App) => {
                             </button>
                         ` : ''}
                     </div>
+                    <p class="text-[10px] font-bold text-slate-400 uppercase mb-1">${settings.rt_name || 'Unit Lingkungan'}</p>
                     <h3 class="text-lg font-black text-slate-900 mb-2 uppercase select-all">${cp.name}</h3>
                     <div id="qr-cp-${cp.id}" class="p-4 bg-white border border-slate-100 rounded-2xl mb-6 shadow-sm"></div>
                     <p class="text-[10px] text-slate-400 font-mono uppercase">${cp.qr_code_string}</p>
