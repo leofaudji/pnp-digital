@@ -64,6 +64,16 @@ const App = {
         window.addEventListener('hashchange', () => this.handleRoute());
         await this.handleRoute();
         await Chatbot.init();
+
+        // Hide splash screen with a gentle delay for premium feel
+        setTimeout(() => {
+            const splash = document.getElementById('global-splash');
+            if (splash) {
+                splash.classList.add('splash-hidden');
+                // Remove from DOM after transition to keep it clean
+                setTimeout(() => splash.remove(), 800);
+            }
+        }, 1200);
     },
 
     addRoute(path, handler) {

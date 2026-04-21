@@ -199,6 +199,10 @@ $router->add('GET', '/favicon.ico', function () {
 });
 
 $router->add('GET', '/', function () {
+    $db = Database::getInstance();
+    $stmt = $db->query("SELECT value FROM settings WHERE `key` = 'app_title'");
+    $app_title = $stmt->fetchColumn() ?: 'RT DIGITAL';
+    
     $csrf_token = Auth::generateCsrfToken();
     require __DIR__ . '/../views/index.php';
 });

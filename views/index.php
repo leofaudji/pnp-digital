@@ -82,6 +82,20 @@
 
 <body class="bg-gray-50 text-gray-800 font-sans antialiased">
 
+    <!-- Global Splash Screen -->
+    <div id="global-splash">
+        <div class="splash-logo-container">
+            <div class="splash-glow"></div>
+            <i data-lucide="shield-check"></i>
+        </div>
+        <div class="splash-title"><?= htmlspecialchars($app_title) ?></div>
+        <div class="splash-shimmer font-bold text-[10px] uppercase tracking-[0.2em]">Sistem Manajemen Terpadu</div>
+        
+        <div class="splash-loading-bar">
+            <div class="splash-loading-progress"></div>
+        </div>
+    </div>
+
     <div id="app" class="flex h-screen overflow-hidden bg-slate-50">
         <!-- Sidebar will be injected here if logged in -->
         <div id="sidebar-container" class="h-full flex-shrink-0"></div>
