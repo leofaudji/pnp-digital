@@ -200,8 +200,11 @@ $router->add('GET', '/favicon.ico', function () {
 
 $router->add('GET', '/', function () {
     $db = Database::getInstance();
-    $stmt = $db->query("SELECT value FROM settings WHERE `key` = 'app_title'");
-    $app_title = $stmt->fetchColumn() ?: 'RT DIGITAL';
+    $stmt = $db->query("SELECT `key`, `value` FROM settings WHERE `key` IN ('app_title', 'rt_name')");
+    $settings = $stmt->fetchAll(PDO::FETCH_KEY_PAIR);
+    
+    $app_title = $settings['app_title'] ?? 'RT DIGITAL';
+    $rt_name = $settings['rt_name'] ?? '';
     
     $csrf_token = Auth::generateCsrfToken();
     require __DIR__ . '/../views/index.php';

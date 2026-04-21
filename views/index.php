@@ -89,6 +89,9 @@
             <i data-lucide="shield-check"></i>
         </div>
         <div class="splash-title"><?= htmlspecialchars($app_title) ?></div>
+        <?php if ($rt_name): ?>
+            <div class="text-white/60 text-sm font-semibold mb-2"><?= htmlspecialchars($rt_name) ?></div>
+        <?php endif; ?>
         <div class="splash-shimmer font-bold text-[10px] uppercase tracking-[0.2em]">Sistem Manajemen Terpadu</div>
         
         <div class="splash-loading-bar">
