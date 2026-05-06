@@ -2,16 +2,15 @@
 
 Semua perubahan penting pada proyek ini akan didokumentasikan di file ini.
 
-## [2.0.0] - 2026-05-06
+## [2.0.1] - 2026-05-06
 ### Added
-- Integrasi **Cloudflare R2 Storage** sebagai storage engine utama (S3-Compatible).
-- Sistem **Unified Storage Engine** yang mendukung transisi otomatis antara penyimpanan lokal dan cloud.
-- Implementasi **S3 v4 Signature** secara native tanpa dependensi tambahan untuk performa maksimal.
-- Optimalisasi **Native Feel UI**: *text-selection suppression*, *touch-highlight removal*, dan *smooth transitions*.
+- Implementasi **Client-Side Image Compression** pada modul Scanner. Foto bukti patroli kini otomatis di-resize (max 1024px) sebelum dikirim untuk mencegah error *memory limit* dan menghemat kuota.
+- Penambahan logging internal pada sistem storage untuk memudahkan debugging kegagalan upload.
 
 ### Fixed
-- Sinkronisasi URL bukti patroli antara storage lokal dan cloud pada dashboard.
-- Perbaikan broken image link pada modul Riwayat Kehadiran saat menggunakan storage cloud.
+- Perbaikan error "Terjadi kesalahan saat memproses QR" yang muncul saat mengunggah foto bukti patroli berukuran besar.
+
+## [2.0.0] - 2026-05-06
 
 ## [1.4.1] - 2026-05-06
 ### Added

@@ -183,12 +183,14 @@ class Storage
         
         $response = curl_exec($ch);
         $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+        $curlError = curl_error($ch);
         curl_close($ch);
         
         if ($httpCode == 200) {
             return rtrim($r2['public_url'], '/') . '/' . $targetPath;
         }
         
+        error_log("[Storage] R2 Upload Failed. HTTP: $httpCode, Error: $curlError, Path: $targetPath");
         return false;
     }
 }
