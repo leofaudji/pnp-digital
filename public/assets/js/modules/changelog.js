@@ -12,9 +12,18 @@ export const Changelog = async (ctx) => {
                     <span class="text-[10px] font-black uppercase tracking-[0.2em]">Sistem Update Log</span>
                 </div>
                 <h1 class="text-4xl md:text-5xl font-black text-slate-900 tracking-tight mb-4">Apa Yang Baru?</h1>
-                <p class="text-slate-500 text-lg font-medium max-w-xl mx-auto leading-relaxed">
+                <p class="text-slate-500 text-lg font-medium max-w-xl mx-auto leading-relaxed mb-8">
                     Kami terus melakukan pembaruan untuk memastikan sistem berjalan lancar dan memberikan kemudahan terbaik untuk bapak.
                 </p>
+
+                <!-- New Manual Update Button -->
+                <div class="flex flex-col items-center justify-center space-y-4">
+                    <button onclick="window.checkUpdate(true)" class="inline-flex items-center gap-3 px-8 py-4 bg-slate-900 text-white font-black rounded-2xl hover:bg-brand-600 hover:-translate-y-1 transition-all duration-300 shadow-xl shadow-slate-900/10 active:scale-95 group">
+                        <i data-lucide="refresh-cw" class="w-5 h-5 group-hover:rotate-180 transition-transform duration-700"></i>
+                        <span>CEK PEMBARUAN SISTEM</span>
+                    </button>
+                    <p class="text-[10px] text-slate-400 font-bold uppercase tracking-widest">Klik jika aplikasi tidak otomatis terupdate</p>
+                </div>
             </div>
 
             <!-- Feed Section -->

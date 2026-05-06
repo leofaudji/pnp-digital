@@ -2,13 +2,11 @@
 
 Semua perubahan penting pada proyek ini akan didokumentasikan di file ini.
 
-## [2.0.2] - 2026-05-06
-### Added
-- Fitur **Cek Update Manual** di halaman Pengaturan. Bapak kini bisa memaksa pengecekan versi terbaru secara langsung jika sistem otomatis terhambat cache browser.
-- Optimasi registrasi Service Worker dengan `updateViaCache: none` untuk memastikan perangkat mobile selalu mendapatkan file terbaru tanpa tertahan cache HTTP.
+## [2.0.3] - 2026-05-06
+### Changed
+- Relokasi fitur **Cek Pembaruan Sistem** ke halaman Changelog agar dapat diakses oleh semua peran (termasuk Satpam/Security) melalui tautan versi di sidebar.
 
-### Fixed
-- Masalah sinkronisasi versi pada beberapa perangkat mobile (PWA) yang sering tertahan di versi lama.
+## [2.0.2] - 2026-05-06
 
 ## [2.0.1] - 2026-05-06
 
