@@ -10,7 +10,8 @@ class Storage
 
     private static function init()
     {
-        if (self::$config !== null) return;
+        if (self::$config !== null)
+            return;
 
         self::$config = [
             'driver' => env('STORAGE_DRIVER', 'local'),
@@ -65,7 +66,8 @@ class Storage
         $base64Data = substr($base64Data, strpos($base64Data, ',') + 1);
         $decodedData = base64_decode($base64Data);
 
-        if (!$decodedData) return false;
+        if (!$decodedData)
+            return false;
 
         $filename = time() . '_' . bin2hex(random_bytes(4)) . '.' . $imageExt;
         $targetPath = trim($folder, '/') . '/' . $filename;
@@ -84,11 +86,72 @@ class Storage
      */
     public static function url($path)
     {
-        if (empty($path)) return '';
-        if (strpos($path, 'http') === 0) return $path;
+        if (empty($path))
+            return '';
 
         self::init();
+        $r2Config = self::$config['r2'];
+        $publicBase = rtrim($r2Config['public_url'], '/');
+
+        // If it's already a full R2 public URL, extract the relative path to re-sign it
+        if (strpos($path, $publicBase) === 0) {
+            $path = ltrim(substr($path, strlen($publicBase)), '/');
+        }
+
+        if (strpos($path, 'http') === 0)
+            return $path;
+
+        $driver = self::$config['driver'];
+        if ($driver === 'r2') {
+            return self::getSignedUrl($path);
+        }
+
         return self::$config['local']['url'] . ltrim($path, '/');
+    }
+
+    /**
+     * Generate a Pre-signed URL for R2 (S3 V4)
+     */
+    public static function getSignedUrl($path, $expires = 3600)
+    {
+        $r2 = self::$config['r2'];
+        $bucket = $r2['bucket'];
+        $parsedUrl = parse_url($r2['endpoint']);
+        $host = $parsedUrl['host'];
+        $baseUrl = $parsedUrl['scheme'] . '://' . $host;
+        
+        $amzDate = gmdate('Ymd\THis\Z');
+        $dateStamp = gmdate('Ymd');
+        $region = $r2['region'];
+        $credentialScope = $dateStamp . "/" . $region . "/s3/aws4_request";
+        
+        $canonicalUri = '/' . $bucket . '/' . ltrim($path, '/');
+        $endpoint = $baseUrl . $canonicalUri;
+
+        $queryParams = [
+            'X-Amz-Algorithm' => 'AWS4-HMAC-SHA256',
+            'X-Amz-Credential' => $r2['key'] . '/' . $credentialScope,
+            'X-Amz-Date' => $amzDate,
+            'X-Amz-Expires' => $expires,
+            'X-Amz-SignedHeaders' => 'host'
+        ];
+        ksort($queryParams);
+        $queryStr = http_build_query($queryParams);
+
+        $canonicalHeaders = "host:" . $host . "\n";
+        $signedHeaders = "host";
+        $payloadHash = "UNSIGNED-PAYLOAD";
+
+        $canonicalRequest = "GET\n" . $canonicalUri . "\n" . $queryStr . "\n" . $canonicalHeaders . "\n" . $signedHeaders . "\n" . $payloadHash;
+        $stringToSign = "AWS4-HMAC-SHA256\n" . $amzDate . "\n" . $credentialScope . "\n" . hash('sha256', $canonicalRequest);
+
+        $kDate = hash_hmac('sha256', $dateStamp, "AWS4" . $r2['secret'], true);
+        $kRegion = hash_hmac('sha256', $region, $kDate, true);
+        $kService = hash_hmac('sha256', "s3", $kRegion, true);
+        $kSigning = hash_hmac('sha256', "aws4_request", $kService, true);
+        $signature = hash_hmac('sha256', $stringToSign, $kSigning);
+
+        return $endpoint . '?' . $queryStr . '&X-Amz-Signature=' . $signature;
     }
 
     private static function uploadToLocal($tmpFile, $targetPath)
@@ -141,32 +204,35 @@ class Storage
     {
         $r2 = self::$config['r2'];
         $bucket = $r2['bucket'];
-        $host = parse_url($r2['endpoint'], PHP_URL_HOST);
-        $endpoint = rtrim($r2['endpoint'], '/') . '/' . $bucket . '/' . $targetPath;
         
+        $parsedUrl = parse_url($r2['endpoint']);
+        $host = $parsedUrl['host'];
+        $baseUrl = $parsedUrl['scheme'] . '://' . $host;
+        $endpoint = $baseUrl . '/' . $bucket . '/' . $targetPath;
+
         $amzDate = gmdate('Ymd\THis\Z');
         $dateStamp = gmdate('Ymd');
-        
+
         $canonicalUri = '/' . $bucket . '/' . $targetPath;
         $canonicalQuerystring = '';
         $canonicalHeaders = "content-type:" . $contentType . "\n" . "host:" . $host . "\n" . "x-amz-content-sha256:" . hash('sha256', $content) . "\n" . "x-amz-date:" . $amzDate . "\n";
         $signedHeaders = "content-type;host;x-amz-content-sha256;x-amz-date";
-        
+
         $payloadHash = hash('sha256', $content);
         $canonicalRequest = "PUT\n" . $canonicalUri . "\n" . $canonicalQuerystring . "\n" . $canonicalHeaders . "\n" . $signedHeaders . "\n" . $payloadHash;
-        
+
         $algorithm = "AWS4-HMAC-SHA256";
         $credentialScope = $dateStamp . "/" . $r2['region'] . "/s3/aws4_request";
         $stringToSign = $algorithm . "\n" . $amzDate . "\n" . $credentialScope . "\n" . hash('sha256', $canonicalRequest);
-        
+
         $kDate = hash_hmac('sha256', $dateStamp, "AWS4" . $r2['secret'], true);
         $kRegion = hash_hmac('sha256', $r2['region'], $kDate, true);
         $kService = hash_hmac('sha256', "s3", $kRegion, true);
         $kSigning = hash_hmac('sha256', "aws4_request", $kService, true);
         $signature = hash_hmac('sha256', $stringToSign, $kSigning);
-        
+
         $authorizationHeader = $algorithm . " Credential=" . $r2['key'] . "/" . $credentialScope . ", SignedHeaders=" . $signedHeaders . ", Signature=" . $signature;
-        
+
         $headers = [
             'Authorization: ' . $authorizationHeader,
             'x-amz-date: ' . $amzDate,
@@ -174,22 +240,22 @@ class Storage
             'Content-Type: ' . $contentType,
             'Content-Length: ' . strlen($content)
         ];
-        
+
         $ch = curl_init($endpoint);
         curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'PUT');
         curl_setopt($ch, CURLOPT_POSTFIELDS, $content);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
-        
+
         $response = curl_exec($ch);
         $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
         $curlError = curl_error($ch);
         curl_close($ch);
-        
+
         if ($httpCode == 200) {
-            return rtrim($r2['public_url'], '/') . '/' . $targetPath;
+            return $targetPath;
         }
-        
+
         error_log("[Storage] R2 Upload Failed. HTTP: $httpCode, Error: $curlError, Path: $targetPath");
         return false;
     }

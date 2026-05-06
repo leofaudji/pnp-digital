@@ -2,11 +2,12 @@
 
 Semua perubahan penting pada proyek ini akan didokumentasikan di file ini.
 
-## [2.0.3] - 2026-05-06
-### Changed
-- Relokasi fitur **Cek Pembaruan Sistem** ke halaman Changelog agar dapat diakses oleh semua peran (termasuk Satpam/Security) melalui tautan versi di sidebar.
+## [2.0.9] - 2026-05-06
+### Fixed
+- Perbaikan otomatis untuk link gambar R2 lama yang tersimpan di database. Sistem kini secara cerdas mengonversi link publik yang rusak menjadi **Pre-signed URLs** yang aman.
+- Optimasi penyimpanan database: sistem kini hanya menyimpan path relatif untuk efisiensi dan fleksibilitas domain di masa depan.
 
-## [2.0.2] - 2026-05-06
+## [2.0.8] - 2026-05-06
 
 ## [2.0.1] - 2026-05-06
 

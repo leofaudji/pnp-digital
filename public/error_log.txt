@@ -182,3 +182,4 @@ Stack trace:
 #3 D:\laragon\www\app-rt\public\index.php(222): Router->run()
 #4 {main}
   thrown in D:\laragon\www\app-rt\src\Core\Database.php on line 42
+[06-May-2026 11:24:06 Asia/Jakarta] [Storage] R2 Upload Failed. HTTP: 403, Error: , Path: patrol/1778041445_db5207ae.jpeg
