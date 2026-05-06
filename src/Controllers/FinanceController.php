@@ -4,47 +4,51 @@ class FinanceController extends BaseController
 {
     public function index()
     {
-        $db = Database::getInstance();
         $month = $_GET['month'] ?? date('n');
         $year = $_GET['year'] ?? date('Y');
+        $cacheKey = "finance_index_{$month}_{$year}";
 
-        // 1. Fetch Transactions (Filtered by month/year)
-        $stmt = $db->query(
-            "SELECT f.*, u.full_name as created_by_name 
-             FROM finance f 
-             JOIN users u ON f.created_by = u.id 
-             WHERE MONTH(f.date) = ? AND YEAR(f.date) = ?
-             ORDER BY date DESC",
-            [$month, $year]
-        );
-        $financeData = $stmt->fetchAll();
+        $result = cache()->remember($cacheKey, 1800, function() use ($month, $year) {
+            $db = Database::getInstance();
+            
+            // 1. Fetch Transactions
+            $stmt = $db->query(
+                "SELECT f.*, u.full_name as created_by_name 
+                 FROM finance f 
+                 JOIN users u ON f.created_by = u.id 
+                 WHERE MONTH(f.date) = ? AND YEAR(f.date) = ?
+                 ORDER BY date DESC",
+                [$month, $year]
+            );
+            $financeData = $stmt->fetchAll();
 
-        // 2. Fetch Summary Statistics
-        // Total Balance (Always overall total)
-        $stmt = $db->query("SELECT 
-            SUM(CASE WHEN type = 'INCOME' THEN amount ELSE 0 END) - 
-            SUM(CASE WHEN type = 'EXPENSE' THEN amount ELSE 0 END) as total_balance 
-            FROM finance");
-        $totalBalance = $stmt->fetch()['total_balance'] ?? 0;
+            // 2. Fetch Summary Statistics
+            $stmt = $db->query("SELECT 
+                SUM(CASE WHEN type = 'INCOME' THEN amount ELSE 0 END) - 
+                SUM(CASE WHEN type = 'EXPENSE' THEN amount ELSE 0 END) as total_balance 
+                FROM finance");
+            $totalBalance = $stmt->fetch()['total_balance'] ?? 0;
 
-        // Statistics for the SELECTED Month & Year
-        $stmt = $db->query("SELECT 
-            SUM(CASE WHEN type = 'INCOME' THEN amount ELSE 0 END) as selected_income,
-            SUM(CASE WHEN type = 'EXPENSE' THEN amount ELSE 0 END) as selected_expense
-            FROM finance 
-            WHERE MONTH(date) = ? AND YEAR(date) = ?",
-            [$month, $year]
-        );
-        $selectedStats = $stmt->fetch();
+            $stmt = $db->query("SELECT 
+                SUM(CASE WHEN type = 'INCOME' THEN amount ELSE 0 END) as selected_income,
+                SUM(CASE WHEN type = 'EXPENSE' THEN amount ELSE 0 END) as selected_expense
+                FROM finance 
+                WHERE MONTH(date) = ? AND YEAR(date) = ?",
+                [$month, $year]
+            );
+            $selectedStats = $stmt->fetch();
 
-        $this->json([
-            'data' => $financeData,
-            'summary' => [
-                'total_balance' => $totalBalance,
-                'monthly_income' => $selectedStats['selected_income'] ?? 0,
-                'monthly_expense' => $selectedStats['selected_expense'] ?? 0
-            ]
-        ]);
+            return [
+                'data' => $financeData,
+                'summary' => [
+                    'total_balance' => $totalBalance,
+                    'monthly_income' => $selectedStats['selected_income'] ?? 0,
+                    'monthly_expense' => $selectedStats['selected_expense'] ?? 0
+                ]
+            ];
+        });
+
+        $this->json($result);
     }
 
     public function store()
@@ -63,6 +67,9 @@ class FinanceController extends BaseController
             "INSERT INTO finance (type, amount, description, date, created_by) VALUES (?, ?, ?, ?, ?)",
             [$data['type'], $data['amount'], $data['description'], $data['date'], Auth::user()]
         );
+
+        // Invalidate finance related caches
+        cache()->invalidate('finance');
 
         $this->json(['success' => true]);
     }
@@ -118,6 +125,9 @@ class FinanceController extends BaseController
             "INSERT INTO finance (type, amount, description, date, created_by) VALUES (?, ?, ?, ?, ?)",
             ['EXPENSE', $data['amount'], $financeDesc, $data['date'], Auth::user()]
         );
+
+        // Invalidate finance related caches
+        cache()->invalidate('finance');
 
         $this->json(['success' => true]);
     }

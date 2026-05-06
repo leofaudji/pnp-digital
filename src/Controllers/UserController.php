@@ -7,27 +7,32 @@ class UserController extends BaseController
         $role = Auth::role();
         if ($role != 1 && $role != 2)
             $this->json(['error' => 'Forbidden'], 403);
-        $db = Database::getInstance();
-        try {
-            $stmt = $db->query("
-                SELECT u.*, r.name as role_name, w.no_rumah, w.wa_number, w.no_kk, w.is_kk_head, w.tgl_lahir, w.jenis_kelamin, w.pekerjaan 
-                FROM users u 
-                JOIN roles r ON u.role_id = r.id 
-                LEFT JOIN warga w ON u.id = w.user_id
-                ORDER BY u.id DESC
-            ");
-            $this->json($stmt->fetchAll());
-        } catch (Exception $e) {
-            // Log error or handle missing columns
-            $stmt = $db->query("
-                SELECT u.*, r.name as role_name, w.no_rumah, w.wa_number, w.no_kk, w.is_kk_head 
-                FROM users u 
-                JOIN roles r ON u.role_id = r.id 
-                LEFT JOIN warga w ON u.id = w.user_id
-                ORDER BY u.id DESC
-            ");
-            $this->json($stmt->fetchAll());
-        }
+        
+        $cacheKey = 'users_list_all';
+        $result = cache()->remember($cacheKey, 3600, function() {
+            $db = Database::getInstance();
+            try {
+                $stmt = $db->query("
+                    SELECT u.*, r.name as role_name, w.no_rumah, w.wa_number, w.no_kk, w.is_kk_head, w.tgl_lahir, w.jenis_kelamin, w.pekerjaan 
+                    FROM users u 
+                    JOIN roles r ON u.role_id = r.id 
+                    LEFT JOIN warga w ON u.id = w.user_id
+                    ORDER BY u.id DESC
+                ");
+                return $stmt->fetchAll();
+            } catch (Exception $e) {
+                $stmt = $db->query("
+                    SELECT u.*, r.name as role_name, w.no_rumah, w.wa_number, w.no_kk, w.is_kk_head 
+                    FROM users u 
+                    JOIN roles r ON u.role_id = r.id 
+                    LEFT JOIN warga w ON u.id = w.user_id
+                    ORDER BY u.id DESC
+                ");
+                return $stmt->fetchAll();
+            }
+        });
+
+        $this->json($result);
     }
 
     public function store()
@@ -72,6 +77,9 @@ class UserController extends BaseController
                     ]
                 );
             }
+
+            // Invalidate warga related caches
+            cache()->invalidate('warga');
 
             $this->json(['success' => true, 'message' => 'User created successfully']);
         } catch (Exception $e) {
@@ -136,6 +144,9 @@ class UserController extends BaseController
             $db->query("DELETE FROM warga WHERE user_id = ?", [$data['id']]);
         }
 
+        // Invalidate warga related caches
+        cache()->invalidate('warga');
+
         $this->json(['success' => true, 'message' => 'User updated successfully']);
     }
 
@@ -153,6 +164,10 @@ class UserController extends BaseController
         }
 
         $db->query("DELETE FROM users WHERE id = ?", [$data['id']]);
+
+        // Invalidate warga related caches
+        cache()->invalidate('warga');
+
         $this->json(['success' => true, 'message' => 'User deleted successfully']);
     }
 }

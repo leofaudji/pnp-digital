@@ -5,6 +5,22 @@ class Auth
     public static function startSession()
     {
         if (session_status() === PHP_SESSION_NONE) {
+            // Defensive: Only use Redis if it's actually available
+            $cache = Cache::getInstance();
+            if ($cache->isConnected()) {
+                $redisSocket = env('REDIS_SOCKET');
+                $redisHost = env('REDIS_HOST');
+                
+                if ($redisSocket && @file_exists($redisSocket)) {
+                    ini_set('session.save_handler', 'redis');
+                    ini_set('session.save_path', "unix://$redisSocket?persistent=1&weight=1&timeout=3");
+                } elseif ($redisHost) {
+                    $redisPort = env('REDIS_PORT', 6379);
+                    ini_set('session.save_handler', 'redis');
+                    ini_set('session.save_path', "tcp://$redisHost:$redisPort?persistent=1&weight=1&timeout=3");
+                }
+            }
+
             session_set_cookie_params(['lifetime' => 0, 'path' => '/', 'samesite' => 'Lax']);
             session_start();
         }

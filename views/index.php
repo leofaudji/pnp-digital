@@ -94,6 +94,11 @@
         <?php endif; ?>
         <div class="splash-shimmer font-bold text-[10px] uppercase tracking-[0.2em]">Sistem Manajemen Terpadu</div>
         
+        <!-- Status Text -->
+        <div id="splash-status" class="mt-8 text-white/50 text-[9px] font-black uppercase tracking-[0.3em] animate-pulse">
+            Initializing...
+        </div>
+
         <div class="splash-loading-bar">
             <div class="splash-loading-progress"></div>
         </div>
@@ -242,19 +247,6 @@
             window.location.replace('#/profile?section=security&linked=1');
         </script>
     <?php endif; ?>
-    <script>
-        if ('serviceWorker' in navigator) {
-            window.addEventListener('load', () => {
-                navigator.serviceWorker.register('<?= BASE_PATH ?>/service-worker.js')
-                    .then(registration => {
-                        console.log('ServiceWorker registration successful with scope: ', registration.scope);
-                    })
-                    .catch(err => {
-                        console.log('ServiceWorker registration failed: ', err);
-                    });
-            });
-        }
-    </script>
 </body>
 
 </html>

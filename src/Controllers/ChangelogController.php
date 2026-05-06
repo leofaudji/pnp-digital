@@ -48,6 +48,13 @@ class ChangelogController extends BaseController
             // Match - Change description
             elseif ($line[0] === '-' && $currentVersion) {
                 $description = trim(substr($line, 1));
+                
+                // Basic Markdown parsing for Bold and Italic
+                $description = preg_replace('/\*\*(.*?)\*\*/', '<b>$1</b>', $description); // **bold**
+                $description = preg_replace('/__(.*?)__/', '<b>$1</b>', $description); // __bold__
+                $description = preg_replace('/\*(.*?)\*/', '<i>$1</i>', $description); // *italic*
+                $description = preg_replace('/_(.*?)_/', '<i>$1</i>', $description); // _italic_
+
                 $currentVersion['changes'][] = [
                     'type' => $currentSection,
                     'description' => $description

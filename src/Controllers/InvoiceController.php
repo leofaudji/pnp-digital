@@ -6,57 +6,57 @@ class InvoiceController extends BaseController
     {
         $role = Auth::role();
         $userId = Auth::user();
-        $db = Database::getInstance();
         $month = $_GET['month'] ?? date('n');
         $year = $_GET['year'] ?? date('Y');
-        $status = $_GET['status'] ?? null;
-        $targetUserId = $_GET['user_id'] ?? null;
+        $status = $_GET['status'] ?? 'all';
+        $targetUserId = $_GET['user_id'] ?? 'all';
+        
+        $cacheKey = "invoices_list_{$role}_{$userId}_{$month}_{$year}_{$status}_{$targetUserId}";
 
-        if ($role == 1 || $role == 2) {
-            // Admin/Bendahara can see all with filters
-            $query = "SELECT i.*, u.full_name, u.username, f.date as paid_at
-                      FROM invoices i 
-                      JOIN users u ON i.user_id = u.id 
-                      LEFT JOIN finance f ON i.finance_id = f.id
-                      WHERE 1=1";
-            $params = [];
+        $result = cache()->remember($cacheKey, 3600, function() use ($role, $userId, $month, $year, $status, $targetUserId) {
+            $db = Database::getInstance();
+            if ($role == 1 || $role == 2) {
+                $query = "SELECT i.*, u.full_name, u.username, f.date as paid_at
+                          FROM invoices i 
+                          JOIN users u ON i.user_id = u.id 
+                          LEFT JOIN finance f ON i.finance_id = f.id
+                          WHERE 1=1";
+                $params = [];
 
-            if (!empty($month)) {
-                $query .= " AND i.month = ?";
-                $params[] = $month;
+                if ($month !== 'all' && !empty($month)) {
+                    $query .= " AND i.month = ?";
+                    $params[] = $month;
+                }
+                if ($year !== 'all' && !empty($year)) {
+                    $query .= " AND i.year = ?";
+                    $params[] = $year;
+                }
+                if ($status !== 'all' && !empty($status)) {
+                    $query .= " AND i.status = ?";
+                    $params[] = $status;
+                }
+                if ($targetUserId !== 'all' && !empty($targetUserId)) {
+                    $query .= " AND i.user_id = ?";
+                    $params[] = $targetUserId;
+                }
+
+                $query .= " ORDER BY i.year DESC, i.month DESC, u.full_name ASC";
+                $stmt = $db->query($query, $params);
+            } else {
+                $stmt = $db->query(
+                    "SELECT i.*, u.full_name, f.date as paid_at 
+                     FROM invoices i 
+                     JOIN users u ON i.user_id = u.id 
+                     LEFT JOIN finance f ON i.finance_id = f.id
+                     WHERE i.user_id = ?
+                     ORDER BY i.year DESC, i.month DESC",
+                    [$userId]
+                );
             }
+            return $stmt->fetchAll();
+        });
 
-            if (!empty($year)) {
-                $query .= " AND i.year = ?";
-                $params[] = $year;
-            }
-
-            if ($status) {
-                $query .= " AND i.status = ?";
-                $params[] = $status;
-            }
-
-            if ($targetUserId) {
-                $query .= " AND i.user_id = ?";
-                $params[] = $targetUserId;
-            }
-
-            $query .= " ORDER BY i.year DESC, i.month DESC, u.full_name ASC";
-            $stmt = $db->query($query, $params);
-        } else {
-            // Residents only see theirs
-            $stmt = $db->query(
-                "SELECT i.*, u.full_name, f.date as paid_at 
-                 FROM invoices i 
-                 JOIN users u ON i.user_id = u.id 
-                 LEFT JOIN finance f ON i.finance_id = f.id
-                 WHERE i.user_id = ?
-                 ORDER BY i.year DESC, i.month DESC",
-                [$userId]
-            );
-        }
-
-        $this->json($stmt->fetchAll());
+        $this->json($result);
     }
 
     public function generate_monthly()
@@ -122,6 +122,9 @@ class InvoiceController extends BaseController
                 // Ignore duplicates
             }
         }
+
+        // Invalidate invoice cache
+        cache()->invalidate('invoices');
 
         $this->json(['success' => true, 'message' => "$count tagihan berhasil dibuat/diverifikasi."]);
     }
@@ -373,18 +376,20 @@ class InvoiceController extends BaseController
     {
         $role = Auth::role();
         $userId = Auth::user();
-        $db = Database::getInstance();
+        $cacheKey = "invoices_unpaid_count_{$role}_{$userId}";
 
-        if ($role == 1 || $role == 2) {
-            // Admin/Bendahara see ALL unpaid for the current system year
-            $stmt = $db->query("SELECT COUNT(*) as count FROM invoices WHERE status = 'UNPAID'");
-        } else {
-            // Residents see ONLY theirs
-            $stmt = $db->query("SELECT COUNT(*) as count FROM invoices WHERE user_id = ? AND status = 'UNPAID'", [$userId]);
-        }
+        $result = cache()->remember($cacheKey, 1800, function() use ($role, $userId) {
+            $db = Database::getInstance();
+            if ($role == 1 || $role == 2) {
+                $stmt = $db->query("SELECT COUNT(*) as count FROM invoices WHERE status = 'UNPAID'");
+            } else {
+                $stmt = $db->query("SELECT COUNT(*) as count FROM invoices WHERE user_id = ? AND status = 'UNPAID'", [$userId]);
+            }
+            $row = $stmt->fetch();
+            return (int) ($row['count'] ?? 0);
+        });
 
-        $result = $stmt->fetch();
-        $this->json(['count' => (int) ($result['count'] ?? 0)]);
+        $this->json(['count' => $result]);
     }
 
     public function get_unpaid_users_count()

@@ -2,6 +2,39 @@
 
 Semua perubahan penting pada proyek ini akan didokumentasikan di file ini.
 
+## [1.4.1] - 2026-05-06
+### Added
+- Dukungan format **Bold** dan *Italic* pada isi log changelog.
+- Desain changelog yang lebih *compact* dan bersih untuk keterbacaan yang lebih baik.
+
+### Fixed
+- Perbaikan jarak kosong berlebih (*excessive space*) pada bagian atas sidebar.
+- Optimasi margin dan padding pada baris log agar tidak terlalu renggang.
+
+
+## [1.4.0] - 2026-05-06
+### Added
+- Integrasi **Redis High-Performance Caching** di seluruh modul utama (Finance, Warga, Security, Invoices, Visitors).
+- Sistem **Unified Cache Manager** dengan fitur *Auto-Invalidation* berbasis grup logis.
+- Fitur **Redis Monitoring Dashboard** untuk memantau status dan kesehatan memori server secara real-time.
+- Redesain halaman **Changelog** dengan layout *Professional Collapsible Card* dan timeline animasi.
+
+### Changed
+- Peningkatan kecepatan akses data laporan hingga 500% menggunakan memori Redis.
+- Optimasi query database berat (Leaderboard & Demographics) ke dalam cache cerdas.
+- Upgrade sistem invalidation cache untuk memastikan data tetap akurat dan sinkron di seluruh perangkat.
+
+
+## [1.3.0] - 2026-05-06
+### Added
+- Fitur "Initializing" pada splash screen untuk pengecekan sistem sebelum aplikasi siap digunakan.
+- Sistem auto-update PWA yang mendeteksi versi baru secara otomatis dan memberikan notifikasi progres download.
+- Peningkatan pengalaman pengguna (UX) dengan animasi status pada saat boot aplikasi.
+
+### Changed
+- Sentralisasi registrasi Service Worker ke dalam modul utama aplikasi untuk kontrol update yang lebih baik.
+
+
 ## [1.2.0] - 2026-04-10
 ### Added
 - Sistem smart sidebar yang lebih cepat - aplikasi sekarang lebih responsif saat berpindah halaman

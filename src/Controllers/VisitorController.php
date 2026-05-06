@@ -36,25 +36,29 @@ class VisitorController extends BaseController
         if (!$user_id)
             $this->json(['error' => 'Unauthorized'], 401);
 
-        $db = Database::getInstance();
-        $this->fixSchema($db);
-
         $role = Auth::role();
+        $cacheKey = "visitors_list_{$role}_{$user_id}";
 
-        if ($role == 4) { // Warga
-            $stmt = $db->query("SELECT v.*, u.full_name as host_name 
-                               FROM visitors v 
-                               JOIN users u ON v.host_id = u.id 
-                               WHERE v.host_id = ? 
-                               ORDER BY v.created_at DESC", [$user_id]);
-        } else { // Admin, Bendahara, Satpam
-            $stmt = $db->query("SELECT v.*, u.full_name as host_name 
-                               FROM visitors v 
-                               JOIN users u ON v.host_id = u.id 
-                               ORDER BY v.created_at DESC");
-        }
+        $result = cache()->remember($cacheKey, 1800, function() use ($user_id, $role) {
+            $db = Database::getInstance();
+            $this->fixSchema($db);
 
-        $this->json($stmt->fetchAll());
+            if ($role == 4) { // Warga
+                $stmt = $db->query("SELECT v.*, u.full_name as host_name 
+                                   FROM visitors v 
+                                   JOIN users u ON v.host_id = u.id 
+                                   WHERE v.host_id = ? 
+                                   ORDER BY v.created_at DESC", [$user_id]);
+            } else { // Admin, Bendahara, Satpam
+                $stmt = $db->query("SELECT v.*, u.full_name as host_name 
+                                   FROM visitors v 
+                                   JOIN users u ON v.host_id = u.id 
+                                   ORDER BY v.created_at DESC");
+            }
+            return $stmt->fetchAll();
+        });
+
+        $this->json($result);
     }
 
     public function store()
@@ -82,6 +86,9 @@ class VisitorController extends BaseController
                 $data['purpose'] ?? null,
                 $qr_token
             ]);
+
+            // Invalidate visitor cache
+            cache()->invalidate('visitors');
 
             $this->json(['success' => true, 'id' => $db->lastInsertId(), 'qr_token' => $qr_token]);
         } catch (\Exception $e) {
@@ -118,6 +125,9 @@ class VisitorController extends BaseController
 
         $db->query("UPDATE visitors SET status = 'ARRIVED', arrival_time = CURRENT_TIMESTAMP WHERE id = ?", [$visitor['id']]);
 
+        // Invalidate visitor cache
+        cache()->invalidate('visitors');
+
         $this->json([
             'success' => true,
             'message' => 'Kedatangan tamu berhasil dikonfirmasi',
@@ -141,6 +151,9 @@ class VisitorController extends BaseController
 
         $db = Database::getInstance();
         $db->query("UPDATE visitors SET status = 'DEPARTED', departure_time = CURRENT_TIMESTAMP WHERE id = ?", [$id]);
+
+        // Invalidate visitor cache
+        cache()->invalidate('visitors');
 
         $this->json(['success' => true]);
     }

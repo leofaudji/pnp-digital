@@ -128,6 +128,7 @@ const Sidebar = {
                 <nav class="space-y-0.5">
         `;
 
+        let firstVisible = true;
         categories.forEach(cat => {
             const hasVisibleItem = cat.items.some(item => {
                 if (item.roles && item.roles.includes(role)) return true;
@@ -137,8 +138,9 @@ const Sidebar = {
 
             if (!hasVisibleItem) return;
 
-            // Category Header
-            html += `<div class="px-3 mt-6 mb-2 text-[10px] font-semibold text-slate-400 uppercase tracking-widest">${cat.category}</div>`;
+            // Category Header - Only mt-6 if not first visible
+            html += `<div class="px-3 ${firstVisible ? 'mt-2' : 'mt-6'} mb-2 text-[10px] font-semibold text-slate-400 uppercase tracking-widest">${cat.category}</div>`;
+            firstVisible = false;
 
             cat.items.forEach(item => {
                 const isItemAllowed = item.roles && item.roles.includes(role);

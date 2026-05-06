@@ -105,3 +105,14 @@ if (!function_exists('app_version')) {
         return env('APP_VERSION', '1.0.0');
     }
 }
+if (!function_exists('cache')) {
+    /**
+     * Global helper for Cache instance.
+     * 
+     * @return Cache
+     */
+    function cache()
+    {
+        return Cache::getInstance();
+    }
+}

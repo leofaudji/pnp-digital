@@ -11,12 +11,15 @@ class FeeController extends BaseController
             $this->json(['error' => 'User ID is required'], 400);
         }
 
-        $db = Database::getInstance();
-        $stmt = $db->query(
-            "SELECT month, amount, paid_at FROM fee_payments WHERE user_id = ? AND year = ?",
-            [$userId, $year]
-        );
-        $payments = $stmt->fetchAll();
+        $cacheKey = "fee_status_{$userId}_{$year}";
+        $payments = cache()->remember($cacheKey, 3600, function() use ($userId, $year) {
+            $db = Database::getInstance();
+            $stmt = $db->query(
+                "SELECT month, amount, paid_at FROM fee_payments WHERE user_id = ? AND year = ?",
+                [$userId, $year]
+            );
+            return $stmt->fetchAll();
+        });
 
         $this->json($payments);
     }
@@ -84,6 +87,12 @@ class FeeController extends BaseController
                 "UPDATE invoices SET status = 'PAID', finance_id = ? WHERE user_id = ? AND month = ? AND year = ?",
                 [$financeId, $data['user_id'], $data['month'], $data['year']]
             );
+
+            // Invalidate related caches
+            cache()->invalidate('finance');
+            cache()->invalidate('invoices');
+            cache()->deleteByPrefix("fee_status_{$data['user_id']}_");
+            cache()->deleteByPrefix("fee_arrears_");
 
             $this->json(['success' => true, 'message' => 'Pembayaran berhasil dicatat', 'amount' => $totalAmount]);
         } catch (Exception $e) {
@@ -173,6 +182,12 @@ class FeeController extends BaseController
             }
 
             $this->json(['success' => true, 'message' => "$count pembayaran kolektif berhasil dicatat", 'amount_per_person' => $totalAmount]);
+            
+            // Invalidate caches
+            cache()->invalidate('finance');
+            cache()->invalidate('invoices');
+            cache()->deleteByPrefix("fee_status_");
+            cache()->deleteByPrefix("fee_arrears_");
         } catch (Exception $e) {
             $this->json(['error' => 'Beberapa pembayaran mungkin gagal (sudah terbayar sebelumnya)'], 400);
         }
@@ -182,36 +197,36 @@ class FeeController extends BaseController
     {
         $year = $_GET['year'] ?? date('Y');
 
-        $db = Database::getInstance();
+        $cacheKey = "fee_arrears_{$year}";
+        $result = cache()->remember($cacheKey, 1800, function() use ($year) {
+            $db = Database::getInstance();
+            $stmt = $db->query(
+                "SELECT user_id, month 
+                 FROM invoices 
+                 WHERE status = 'UNPAID' AND year = ?
+                 ORDER BY month ASC",
+                [$year]
+            );
+            $unpaidInvoices = $stmt->fetchAll();
 
-        // Query INVOICES directly for UNPAID status
-        // This aligns with the "Digital Invoice" system.
-        // If an invoice is not generated, it is NOT considered arrears.
-        $stmt = $db->query(
-            "SELECT user_id, month 
-             FROM invoices 
-             WHERE status = 'UNPAID' AND year = ?
-             ORDER BY month ASC",
-            [$year]
-        );
-        $unpaidInvoices = $stmt->fetchAll();
+            $arrears = [];
+            $monthNames = [1 => 'Januari', 2 => 'Februari', 3 => 'Maret', 4 => 'April', 5 => 'Mei', 6 => 'Juni', 7 => 'Juli', 8 => 'Agustus', 9 => 'September', 10 => 'Oktober', 11 => 'November', 12 => 'Desember'];
 
-        $arrears = [];
-        $monthNames = [1 => 'Januari', 2 => 'Februari', 3 => 'Maret', 4 => 'April', 5 => 'Mei', 6 => 'Juni', 7 => 'Juli', 8 => 'Agustus', 9 => 'September', 10 => 'Oktober', 11 => 'November', 12 => 'Desember'];
+            foreach ($unpaidInvoices as $inv) {
+                $uid = $inv['user_id'];
+                if (!isset($arrears[$uid])) {
+                    $arrears[$uid] = [
+                        'count' => 0,
+                        'months' => []
+                    ];
+                }
 
-        foreach ($unpaidInvoices as $inv) {
-            $uid = $inv['user_id'];
-            if (!isset($arrears[$uid])) {
-                $arrears[$uid] = [
-                    'count' => 0,
-                    'months' => []
-                ];
+                $arrears[$uid]['count']++;
+                $arrears[$uid]['months'][] = $monthNames[$inv['month']] ?? $inv['month'];
             }
+            return $arrears;
+        });
 
-            $arrears[$uid]['count']++;
-            $arrears[$uid]['months'][] = $monthNames[$inv['month']] ?? $inv['month'];
-        }
-
-        $this->json($arrears);
+        $this->json($result);
     }
 }

@@ -1,282 +1,186 @@
 {
     "sidebar": [
         {
-            "category": "UTAMA",
+            "category": "MENU UTAMA",
             "items": [
                 {
                     "name": "Dashboard",
                     "path": "#/dashboard",
                     "icon": "layout-dashboard",
-                    "roles": [
-                        "Admin",
-                        "Warga",
-                        "Satpam",
-                        "Bendahara"
-                    ]
+                    "roles": ["Admin", "Warga", "Satpam", "Bendahara"]
                 },
                 {
                     "name": "Identitas Digital",
                     "path": "#/my-qr",
                     "icon": "qr-code",
-                    "roles": [
-                        "Warga",
-                        "Admin",
-                        "Bendahara"
-                    ]
+                    "roles": ["Warga", "Admin", "Bendahara"]
                 },
                 {
                     "name": "Tagihan Saya",
                     "path": "#/invoice-resident",
                     "icon": "wallet",
-                    "roles": [
-                        "Warga"
-                    ]
+                    "roles": ["Warga"]
                 }
             ]
         },
         {
-            "category": "ADMINISTRASI",
+            "category": "KEWARGAAN",
             "items": [
                 {
                     "name": "Data Warga",
                     "path": "#/warga",
                     "icon": "users",
-                    "roles": [
-                        "Admin",
-                        "Bendahara"
-                    ]
+                    "roles": ["Admin", "Bendahara"]
                 },
                 {
-                    "name": "Analisis Warga",
+                    "name": "Analisis Demografi",
                     "path": "#/demographics",
                     "icon": "pie-chart",
-                    "roles": [
-                        "Admin",
-                        "Bendahara"
-                    ]
+                    "roles": ["Admin", "Bendahara"]
                 },
                 {
                     "name": "Notulensi Rapat(AI)",
                     "path": "#/minutes",
                     "icon": "mic",
-                    "roles": [
-                        "Admin",
-                        "Bendahara",
-                        "Warga"
-                    ]
+                    "roles": ["Admin", "Bendahara", "Warga"]
                 },
                 {
                     "name": "Papan Peringkat",
                     "path": "#/leaderboard",
                     "icon": "trophy",
-                    "roles": [
-                        "Admin",
-                        "Satpam",
-                        "Warga",
-                        "Bendahara"
-                    ]
+                    "roles": ["Admin", "Satpam", "Warga", "Bendahara"]
                 }
             ]
         },
         {
-            "category": "KEUANGAN",
+            "category": "KEUANGAN RT",
             "items": [
                 {
                     "name": "Laporan Kas",
                     "path": "#/finance",
                     "icon": "banknote",
-                    "roles": [
-                        "Admin",
-                        "Bendahara",
-                        "Warga"
-                    ]
+                    "roles": ["Admin", "Bendahara", "Warga"]
                 },
                 {
-                    "name": "Analitik Kas",
+                    "name": "Analitik Keuangan",
                     "path": "#/analytics",
                     "icon": "bar-chart-3",
-                    "roles": [
-                        "Admin",
-                        "Bendahara",
-                        "Warga"
-                    ]
+                    "roles": ["Admin", "Bendahara", "Warga"]
                 },
                 {
                     "name": "Digital Invoicing",
                     "path": "#/invoice-admin",
                     "icon": "receipt",
-                    "roles": [
-                        "Admin",
-                        "Bendahara"
-                    ]
+                    "roles": ["Admin", "Bendahara"]
                 },
                 {
                     "name": "Manajemen Petugas",
                     "icon": "coins",
-                    "roles": [
-                        "Admin",
-                        "Bendahara",
-                        "Satpam"
-                    ],
+                    "roles": ["Admin", "Bendahara", "Satpam"],
                     "children": [
                         {
                             "name": "Slip Gaji",
                             "path": "#/salary",
-                            "roles": [
-                                "Satpam",
-                                "Admin"
-                            ]
+                            "roles": ["Satpam", "Admin"]
                         },
                         {
                             "name": "Kasbon Petugas",
                             "path": "#/kasbon",
-                            "roles": [
-                                "Admin",
-                                "Bendahara"
-                            ]
+                            "roles": ["Admin", "Bendahara"]
                         }
                     ]
                 }
             ]
         },
         {
-            "category": "KEAMANAN",
+            "category": "KEAMANAN POS",
             "items": [
                 {
-                    "name": "Satpam Hub",
-                    "icon": "shield-check",
-                    "roles": [
-                        "Admin",
-                        "Satpam",
-                        "Warga"
-                    ],
-                    "children": [
-                        {
-                            "name": "Portal Utama",
-                            "path": "#/satpam-portal",
-                            "roles": [
-                                "Admin",
-                                "Satpam"
-                            ]
-                        },
-                        {
-                            "name": "Riwayat Absen",
-                            "path": "#/attendance",
-                            "roles": [
-                                "Admin",
-                                "Satpam",
-                                "Warga"
-                            ]
-                        },
-                        {
-                            "name": "Status Patroli",
-                            "path": "#/patrol-status",
-                            "roles": [
-                                "Admin",
-                                "Satpam",
-                                "Warga",
-                                "Bendahara"
-                            ]
-                        },
-                        {
-                            "name": "Hub Cetak QR",
-                            "path": "#/checkpoint-admin",
-                            "roles": [
-                                "Admin",
-                                "Bendahara"
-                            ]
-                        }
-                    ]
+                    "name": "Buku Tamu",
+                    "path": "#/visitors",
+                    "icon": "user-plus",
+                    "roles": ["Admin", "Satpam", "Warga"]
                 },
                 {
                     "name": "Monitoring CCTV",
                     "path": "#/cctv",
                     "icon": "video",
-                    "roles": [
-                        "Admin",
-                        "Satpam",
-                        "Warga"
+                    "roles": ["Admin", "Satpam", "Warga"]
+                },
+                {
+                    "name": "Satpam Hub",
+                    "icon": "shield-check",
+                    "roles": ["Admin", "Satpam", "Warga"],
+                    "children": [
+                        {
+                            "name": "Portal Utama",
+                            "path": "#/satpam-portal",
+                            "roles": ["Admin", "Satpam"]
+                        },
+                        {
+                            "name": "Riwayat Absen",
+                            "path": "#/attendance",
+                            "roles": ["Admin", "Satpam", "Warga"]
+                        },
+                        {
+                            "name": "Status Patroli",
+                            "path": "#/patrol-status",
+                            "roles": ["Admin", "Satpam", "Warga", "Bendahara"]
+                        },
+                        {
+                            "name": "Hub Cetak QR",
+                            "path": "#/checkpoint-admin",
+                            "roles": ["Admin", "Bendahara"]
+                        }
                     ]
                 },
                 {
                     "name": "Analisa Keamanan",
                     "path": "#/security-analytics",
                     "icon": "bar-chart-2",
-                    "roles": [
-                        "Admin",
-                        "Bendahara"
-                    ]
+                    "roles": ["Admin", "Bendahara"]
                 },
                 {
                     "name": "Kontribusi Satpam",
                     "path": "#/security-contributions",
                     "icon": "calendar-days",
-                    "roles": [
-                        "Admin",
-                        "Bendahara"
-                    ]
-                },
-                {
-                    "name": "Buku Tamu",
-                    "path": "#/visitors",
-                    "icon": "user-plus",
-                    "roles": [
-                        "Admin",
-                        "Satpam",
-                        "Warga"
-                    ]
+                    "roles": ["Admin", "Bendahara"]
                 },
                 {
                     "name": "SOP Satpam",
                     "path": "#/sop",
                     "icon": "book-open",
-                    "roles": [
-                        "Admin",
-                        "Satpam"
-                    ]
+                    "roles": ["Admin", "Satpam"]
                 }
             ]
         },
         {
-            "category": "PENGATURAN",
+            "category": "SISTEM",
             "items": [
                 {
-                    "name": "Manajemen Sistem",
+                    "name": "Pengaturan",
                     "icon": "settings",
-                    "roles": [
-                        "Admin"
-                    ],
+                    "roles": ["Admin"],
                     "children": [
                         {
                             "name": "Kelola User",
                             "path": "#/users",
-                            "roles": [
-                                "Admin"
-                            ]
+                            "roles": ["Admin"]
                         },
                         {
                             "name": "Kelola Role",
                             "path": "#/roles",
-                            "roles": [
-                                "Admin"
-                            ]
+                            "roles": ["Admin"]
                         },
                         {
-                            "name": "Pengaturan RT",
+                            "name": "Konfigurasi RT",
                             "path": "#/settings",
-                            "roles": [
-                                "Admin"
-                            ]
+                            "roles": ["Admin"]
                         },
                         {
-                            "name": "Changelog",
+                            "name": "Changelog System",
                             "path": "#/changelog",
-                            "roles": [
-                                "Admin",
-                                "Warga",
-                                "Satpam",
-                                "Bendahara"
-                            ]
+                            "roles": ["Admin", "Warga", "Satpam", "Bendahara"]
                         }
                     ]
                 }

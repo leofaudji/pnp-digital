@@ -38,6 +38,12 @@ const App = {
 
         this.basePath = document.querySelector('meta[name="base-path"]')?.getAttribute('content') || '';
 
+        // Status Updater
+        const statusEl = document.getElementById('splash-status');
+        const updateStatus = (text) => {
+            if (statusEl) statusEl.innerText = text;
+        };
+
         // SweetAlert2 Global Config
         window.SwalCustom = Swal.mixin({
             confirmButtonColor: '#0070f3',
@@ -61,11 +67,57 @@ const App = {
             });
         };
 
+        // Initialize Service Worker & Check for Updates
+        await this.initServiceWorker(updateStatus);
+
         window.addEventListener('hashchange', () => this.handleRoute());
         await this.handleRoute();
         await Chatbot.init();
 
-        // Hide splash screen with a gentle delay for premium feel
+        updateStatus('System Ready');
+        this.hideSplash();
+    },
+
+    async initServiceWorker(updateStatus) {
+        if (!('serviceWorker' in navigator)) return;
+
+        updateStatus('Initializing System...');
+        
+        try {
+            const registration = await navigator.serviceWorker.register(`${this.basePath}/service-worker.js`);
+            
+            // Listen for controllerchange (when a new SW takes over)
+            navigator.serviceWorker.addEventListener('controllerchange', () => {
+                updateStatus('Update Installed! Restarting...');
+                setTimeout(() => window.location.reload(), 1000);
+            });
+
+            // If a new SW is found during this session
+            registration.onupdatefound = () => {
+                const newWorker = registration.installing;
+                updateStatus('New Version Found...');
+                
+                newWorker.onstatechange = () => {
+                    if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
+                        updateStatus('Downloading Update...');
+                    }
+                };
+            };
+
+            // Force check for updates
+            updateStatus('Checking for Updates...');
+            await registration.update();
+            
+            // Give a small window for update check to resolve
+            await new Promise(r => setTimeout(r, 600));
+
+        } catch (err) {
+            console.error('SW Registration failed:', err);
+            updateStatus('Ready (Offline)');
+        }
+    },
+
+    hideSplash() {
         setTimeout(() => {
             const splash = document.getElementById('global-splash');
             if (splash) {
@@ -73,7 +125,7 @@ const App = {
                 // Remove from DOM after transition to keep it clean
                 setTimeout(() => splash.remove(), 800);
             }
-        }, 1200);
+        }, 800);
     },
 
     addRoute(path, handler) {

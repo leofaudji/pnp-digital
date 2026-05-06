@@ -162,6 +162,10 @@ $router->add('GET', '/api/analytics/demographics', [new DemographicsController()
 $router->add('GET', '/api/analytics/security', [new SecurityAnalyticsController(), 'getPatterns']);
 $router->add('GET', '/api/analytics/contributions', [new SecurityAnalyticsController(), 'getContributions']);
 
+// Redis Management
+$router->add('GET', '/api/system/redis', [RedisController::class, 'index']);
+$router->add('POST', '/api/system/redis/flush', [RedisController::class, 'flush']);
+
 // Database Backup & Restore
 $router->add('GET', '/api/backup/export', [BackupController::class, 'export']);
 $router->add('POST', '/api/backup/restore', [BackupController::class, 'restore']);
@@ -200,8 +204,12 @@ $router->add('GET', '/favicon.ico', function () {
 
 $router->add('GET', '/', function () {
     $db = Database::getInstance();
-    $stmt = $db->query("SELECT `key`, `value` FROM settings WHERE `key` IN ('app_title', 'rt_name')");
-    $settings = $stmt->fetchAll(PDO::FETCH_KEY_PAIR);
+    
+    // Cache settings for 24 hours
+    $settings = cache()->remember('app_settings', 86400, function() use ($db) {
+        $stmt = $db->query("SELECT `key`, `value` FROM settings WHERE `key` IN ('app_title', 'rt_name')");
+        return $stmt->fetchAll(PDO::FETCH_KEY_PAIR);
+    });
     
     $app_title = $settings['app_title'] ?? 'RT DIGITAL';
     $rt_name = $settings['rt_name'] ?? '';

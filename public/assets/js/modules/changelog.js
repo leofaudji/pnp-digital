@@ -4,23 +4,25 @@ export const Changelog = async (ctx) => {
     const data = await API.get('/api/changelog');
     
     let html = `
-        <div class="p-6 max-w-5xl mx-auto animate-in fade-in duration-700">
-            <!-- Header Section -->
-            <div class="mb-12 text-center md:text-left">
-                <div class="inline-flex items-center gap-2 px-3 py-1 bg-brand-50 text-brand-600 rounded-full border border-brand-100 mb-4 animate-in slide-in-from-top-4 duration-1000">
-                    <i data-lucide="sparkles" class="w-3.5 h-3.5"></i>
-                    <span class="text-[10px] font-black uppercase tracking-widest">Update Log</span>
+        <div class="max-w-4xl mx-auto px-4 py-8 md:py-16 animate-in fade-in duration-700">
+            <!-- Header -->
+            <div class="text-center mb-16">
+                <div class="inline-flex items-center gap-2 px-3 py-1 bg-emerald-50 text-emerald-600 rounded-full border border-emerald-100 mb-6 shadow-sm">
+                    <i data-lucide="zap" class="w-3.5 h-3.5"></i>
+                    <span class="text-[10px] font-black uppercase tracking-[0.2em]">Sistem Update Log</span>
                 </div>
-                <h1 class="text-4xl font-black text-slate-900 tracking-tight mb-3">Apa Yang Baru?</h1>
-                <p class="text-slate-500 text-lg max-w-2xl">Kami terus memperbarui dan meningkatkan sistem untuk pengalaman terbaik Anda.</p>
+                <h1 class="text-4xl md:text-5xl font-black text-slate-900 tracking-tight mb-4">Apa Yang Baru?</h1>
+                <p class="text-slate-500 text-lg font-medium max-w-xl mx-auto leading-relaxed">
+                    Kami terus melakukan pembaruan untuk memastikan sistem berjalan lancar dan memberikan kemudahan terbaik untuk bapak.
+                </p>
             </div>
 
-            <div class="grid grid-cols-1 gap-10">
+            <!-- Feed Section -->
+            <div class="space-y-8">
     `;
 
     if (data && data.versions) {
         data.versions.forEach((v, index) => {
-            // Group changes by type for better organization
             const groupedChanges = v.changes.reduce((acc, change) => {
                 const type = change.type || 'Update';
                 if (!acc[type]) acc[type] = [];
@@ -28,58 +30,74 @@ export const Changelog = async (ctx) => {
                 return acc;
             }, {});
 
+            const isOpen = index === 0;
+
             html += `
-                <div class="relative bg-white rounded-[2.5rem] border border-slate-100 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-500 overflow-hidden group">
-                    <!-- Top Accent Line -->
-                    <div class="absolute top-0 left-0 right-0 h-1.5 bg-gradient-to-r from-brand-500 to-emerald-400 opacity-80"></div>
-                    
-                    <div class="p-8 md:p-10 flex flex-col md:flex-row gap-8">
-                        <!-- Left Info -->
-                        <div class="md:w-1/4 flex flex-col md:items-start items-center text-center md:text-left shrink-0">
-                            <div class="text-3xl font-black text-slate-900 mb-2">v${v.version}</div>
-                            <div class="px-4 py-1.5 bg-slate-50 text-slate-500 rounded-xl text-xs font-bold border border-slate-100 mb-4 w-fit">
-                                ${v.date}
+                <details class="group bg-white border border-slate-100 rounded-3xl shadow-sm hover:shadow-md transition-all duration-300 overflow-hidden" ${isOpen ? 'open' : ''}>
+                    <summary class="flex items-center justify-between p-6 md:p-8 cursor-pointer list-none focus:outline-none">
+                        <div class="flex items-center gap-5 md:gap-8">
+                            <div class="w-12 h-12 flex flex-col items-center justify-center rounded-xl bg-slate-50 group-open:bg-emerald-50 transition-colors duration-500 border border-slate-100 group-open:border-emerald-100 shrink-0">
+                                <span class="text-[8px] font-black text-slate-400 group-open:text-emerald-400 leading-none mb-0.5 uppercase tracking-tighter">V</span>
+                                <span class="text-lg font-black text-slate-900 group-open:text-emerald-600 leading-none tracking-tighter">${v.version}</span>
                             </div>
-                            ${index === 0 ? `
-                                <div class="px-3 py-1 bg-emerald-50 text-emerald-600 rounded-lg text-[10px] font-black uppercase tracking-widest border border-emerald-100">
-                                    Paling Terbaru
+                            
+                            <div>
+                                <div class="flex items-center gap-2 mb-0.5">
+                                    <h2 class="text-lg font-bold text-slate-900 tracking-tight">System Build</h2>
+                                    ${index === 0 ? `
+                                        <span class="px-1.5 py-0.5 bg-emerald-500 text-white text-[8px] font-black uppercase tracking-wider rounded-md shadow-sm">Terbaru</span>
+                                    ` : ''}
                                 </div>
-                            ` : ''}
+                                <div class="flex items-center gap-2 text-slate-400 text-[10px] font-bold uppercase tracking-wider">
+                                    <i data-lucide="calendar" class="w-3 h-3"></i>
+                                    <span>${v.date}</span>
+                                </div>
+                            </div>
                         </div>
 
-                        <!-- Right Details -->
-                        <div class="flex-1 space-y-8">
+                        <div class="w-8 h-8 flex items-center justify-center rounded-full bg-slate-50 group-hover:bg-slate-100 group-open:rotate-180 transition-all duration-500 shrink-0">
+                            <i data-lucide="chevron-down" class="w-4 h-4 text-slate-400"></i>
+                        </div>
+                    </summary>
+
+                    <div class="px-6 md:px-8 pb-5 md:pb-6 pt-0 animate-in fade-in slide-in-from-top-1 duration-400">
+                        <div class="h-px bg-slate-50 mb-4"></div>
+                        <div class="space-y-4">
             `;
 
             Object.entries(groupedChanges).forEach(([type, descriptions]) => {
                 let typeIcon = 'refresh-cw';
-                let typeColor = 'bg-slate-100 text-slate-600 border-slate-200';
+                let typeColor = 'bg-slate-50 text-slate-600 border-slate-100';
                 
-                if (type === 'New Feature') {
+                if (type === 'New Feature' || type === 'Fitur Baru' || type === 'Added') {
                     typeIcon = 'sparkles';
                     typeColor = 'bg-emerald-50 text-emerald-600 border-emerald-100';
-                } else if (type === 'Bug Fix') {
+                } else if (type === 'Bug Fix' || type === 'Perbaikan' || type === 'Fixed') {
                     typeIcon = 'shield-alert';
                     typeColor = 'bg-rose-50 text-rose-600 border-rose-100';
+                } else if (type === 'Redis' || type === 'Performance' || type === 'Changed') {
+                    typeIcon = 'zap';
+                    typeColor = 'bg-amber-50 text-amber-600 border-amber-100';
                 }
 
                 html += `
                     <div>
-                        <div class="flex items-center gap-2.5 mb-5">
-                            <div class="w-7 h-7 flex items-center justify-center rounded-lg ${typeColor} border">
-                                <i data-lucide="${typeIcon}" class="w-4 h-4"></i>
+                        <div class="flex items-center gap-2 mb-2">
+                            <div class="w-5 h-5 flex items-center justify-center rounded-lg ${typeColor} border shadow-xs shrink-0">
+                                <i data-lucide="${typeIcon}" class="w-2.5 h-2.5"></i>
                             </div>
-                            <h3 class="text-sm font-black text-slate-800 uppercase tracking-widest">${type}</h3>
-                            <div class="flex-1 h-px bg-slate-100 ml-2"></div>
+                            <h3 class="text-[8px] font-black text-slate-400 uppercase tracking-[0.2em]">${type}</h3>
+                            <div class="flex-1 h-px bg-slate-50 ml-2"></div>
                         </div>
-                        <ul class="space-y-4">
+                        
+                        <div class="grid grid-cols-1 gap-0.5">
                             ${descriptions.map(desc => `
-                                <li class="flex items-start gap-3 group/item">
-                                    <div class="mt-1.5 w-1.5 h-1.5 rounded-full bg-brand-400 shrink-0 group-hover/item:scale-125 transition-transform duration-300"></div>
-                                    <span class="text-slate-600 leading-relaxed font-medium">${desc}</span>
-                                </li>
+                                <div class="flex items-start gap-2.5 py-1 px-2 rounded-lg hover:bg-slate-50 transition-all duration-200">
+                                    <div class="mt-1.5 w-1 h-1 rounded-full bg-slate-300 shrink-0"></div>
+                                    <span class="text-slate-600 leading-normal font-semibold text-[11px] md:text-[13px]">${desc}</span>
+                                </div>
                             `).join('')}
-                        </ul>
+                        </div>
                     </div>
                 `;
             });
@@ -87,7 +105,7 @@ export const Changelog = async (ctx) => {
             html += `
                         </div>
                     </div>
-                </div>
+                </details>
             `;
         });
     }
@@ -95,18 +113,26 @@ export const Changelog = async (ctx) => {
     html += `
             </div>
             
-            <!-- Footer Quote -->
-            <div class="mt-20 py-12 border-t border-slate-100 text-center">
-                <div class="w-12 h-12 bg-slate-50 rounded-2xl flex items-center justify-center mx-auto mb-6">
-                    <i data-lucide="quote" class="w-6 h-6 text-slate-300"></i>
+            <!-- Footer -->
+            <div class="mt-24 pt-16 border-t border-slate-100 text-center">
+                <div class="w-16 h-16 bg-white shadow-sm border border-slate-100 rounded-2xl flex items-center justify-center mx-auto mb-8">
+                    <i data-lucide="rocket" class="w-8 h-8 text-emerald-500"></i>
                 </div>
-                <p class="text-slate-400 italic text-sm font-medium">"Kecemerlangan bukan satu tindakan, ia adalah satu tabiat."</p>
-                <p class="text-slate-500 font-bold text-[10px] mt-2 uppercase tracking-widest">Terus Melangkah Maju</p>
+                <h3 class="text-2xl font-black text-slate-900 mb-3 tracking-tight">Terus Melangkah Maju</h3>
+                <p class="text-slate-400 font-medium max-w-sm mx-auto mb-8 text-sm leading-relaxed">
+                    Kami berkomitmen menjaga kualitas sistem demi kenyamanan hidup bapak hari ini dan masa depan.
+                </p>
+                <div class="flex items-center justify-center gap-6">
+                    <div class="h-px w-8 bg-slate-100"></div>
+                    <span class="text-[10px] font-black text-slate-300 uppercase tracking-[0.5em]">RT Digital System</span>
+                    <div class="h-px w-8 bg-slate-100"></div>
+                </div>
             </div>
         </div>
     `;
 
     ctx.container.innerHTML = html;
+    
     if (window.lucide) {
         lucide.createIcons();
     }

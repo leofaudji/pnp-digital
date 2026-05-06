@@ -91,6 +91,9 @@ class AttendanceController extends BaseController
                     [$user_id, $today, $scansJson]
                 );
 
+                // Invalidate security related caches
+                cache()->invalidate('security');
+
                 $this->json(['success' => true, 'message' => "Checkpoint {$checkpoint['name']} berhasil dicatat."]);
             } else {
                 $this->json(['error' => "QR Code '$qr' tidak terdaftar sebagai Titik Patroli."], 404);
@@ -154,6 +157,10 @@ class AttendanceController extends BaseController
             }
 
             $msg = $type === 'IN' ? 'Masuk' : 'Pulang';
+            
+            // Invalidate leaderboard & stats
+            cache()->invalidate('security');
+            
             $this->json(['success' => true, 'message' => "Absensi $msg berhasil dicatat untuk $checkpoint_name"]);
         }
     }

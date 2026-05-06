@@ -54,6 +54,10 @@ class SettingController extends BaseController
                     }
                 }
             }
+            
+            // Invalidate settings cache
+            cache()->invalidate('settings');
+            
             $this->json(['success' => true, 'message' => 'Pengaturan berhasil diperbarui']);
         } catch (Exception $e) {
             $this->json(['error' => 'Gagal memperbarui pengaturan: ' . $e->getMessage()], 500);

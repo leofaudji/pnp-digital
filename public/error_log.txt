@@ -138,3 +138,47 @@ Stack trace:
 [16-Apr-2026 11:10:27 Asia/Jakarta] PHP Parse error:  syntax error, unexpected token "public" in D:\laragon\www\app-rt\src\Controllers\SecurityAnalyticsController.php on line 94
 [16-Apr-2026 11:10:28 Asia/Jakarta] PHP Parse error:  syntax error, unexpected token "public" in D:\laragon\www\app-rt\src\Controllers\SecurityAnalyticsController.php on line 94
 [16-Apr-2026 11:10:31 Asia/Jakarta] PHP Parse error:  syntax error, unexpected token "public" in D:\laragon\www\app-rt\src\Controllers\SecurityAnalyticsController.php on line 94
+[06-May-2026 09:14:32 Asia/Jakarta] PHP Warning:  ini_set(): Session save handler &quot;redis&quot; cannot be found in D:\laragon\www\app-rt\src\Core\Auth.php on line 16
+[06-May-2026 09:14:32 Asia/Jakarta] PHP Warning:  session_start(): open(tcp://127.0.0.1:6379?persistent=1&amp;weight=1&amp;timeout=3\sess_h83j62hoootf8hoev4vtdr5n3g, O_RDWR) failed: No such file or directory (2) in D:\laragon\www\app-rt\src\Core\Auth.php on line 21
+[06-May-2026 09:14:32 Asia/Jakarta] PHP Warning:  session_start(): Failed to read session data: files (path: tcp://127.0.0.1:6379?persistent=1&amp;weight=1&amp;timeout=3) in D:\laragon\www\app-rt\src\Core\Auth.php on line 21
+[06-May-2026 09:14:32 Asia/Jakarta] PHP Deprecated:  Automatic conversion of false to array is deprecated in D:\laragon\www\app-rt\src\Controllers\AttendanceController.php on line 251
+[06-May-2026 09:14:32 Asia/Jakarta] PHP Warning:  ini_set(): Session save handler &quot;redis&quot; cannot be found in D:\laragon\www\app-rt\src\Core\Auth.php on line 16
+[06-May-2026 09:14:32 Asia/Jakarta] PHP Warning:  session_start(): open(tcp://127.0.0.1:6379?persistent=1&amp;weight=1&amp;timeout=3\sess_h83j62hoootf8hoev4vtdr5n3g, O_RDWR) failed: No such file or directory (2) in D:\laragon\www\app-rt\src\Core\Auth.php on line 21
+[06-May-2026 09:14:32 Asia/Jakarta] PHP Warning:  session_start(): Failed to read session data: files (path: tcp://127.0.0.1:6379?persistent=1&amp;weight=1&amp;timeout=3) in D:\laragon\www\app-rt\src\Core\Auth.php on line 21
+[06-May-2026 09:14:32 Asia/Jakarta] PHP Warning:  ini_set(): Session save handler &quot;redis&quot; cannot be found in D:\laragon\www\app-rt\src\Core\Auth.php on line 16
+[06-May-2026 09:14:32 Asia/Jakarta] PHP Warning:  session_start(): open(tcp://127.0.0.1:6379?persistent=1&amp;weight=1&amp;timeout=3\sess_h83j62hoootf8hoev4vtdr5n3g, O_RDWR) failed: No such file or directory (2) in D:\laragon\www\app-rt\src\Core\Auth.php on line 21
+[06-May-2026 09:14:32 Asia/Jakarta] PHP Warning:  session_start(): Failed to read session data: files (path: tcp://127.0.0.1:6379?persistent=1&amp;weight=1&amp;timeout=3) in D:\laragon\www\app-rt\src\Core\Auth.php on line 21
+[06-May-2026 09:14:32 Asia/Jakarta] PHP Warning:  ini_set(): Session save handler &quot;redis&quot; cannot be found in D:\laragon\www\app-rt\src\Core\Auth.php on line 16
+[06-May-2026 09:14:32 Asia/Jakarta] PHP Warning:  session_start(): open(tcp://127.0.0.1:6379?persistent=1&amp;weight=1&amp;timeout=3\sess_h83j62hoootf8hoev4vtdr5n3g, O_RDWR) failed: No such file or directory (2) in D:\laragon\www\app-rt\src\Core\Auth.php on line 21
+[06-May-2026 09:14:32 Asia/Jakarta] PHP Warning:  session_start(): Failed to read session data: files (path: tcp://127.0.0.1:6379?persistent=1&amp;weight=1&amp;timeout=3) in D:\laragon\www\app-rt\src\Core\Auth.php on line 21
+[06-May-2026 09:14:32 Asia/Jakarta] PHP Warning:  ini_set(): Session save handler &quot;redis&quot; cannot be found in D:\laragon\www\app-rt\src\Core\Auth.php on line 16
+[06-May-2026 09:14:32 Asia/Jakarta] PHP Warning:  session_start(): open(tcp://127.0.0.1:6379?persistent=1&amp;weight=1&amp;timeout=3\sess_h83j62hoootf8hoev4vtdr5n3g, O_RDWR) failed: No such file or directory (2) in D:\laragon\www\app-rt\src\Core\Auth.php on line 21
+[06-May-2026 09:14:32 Asia/Jakarta] PHP Warning:  session_start(): Failed to read session data: files (path: tcp://127.0.0.1:6379?persistent=1&amp;weight=1&amp;timeout=3) in D:\laragon\www\app-rt\src\Core\Auth.php on line 21
+[06-May-2026 09:14:33 Asia/Jakarta] PHP Warning:  ini_set(): Session save handler &quot;redis&quot; cannot be found in D:\laragon\www\app-rt\src\Core\Auth.php on line 16
+[06-May-2026 09:14:33 Asia/Jakarta] PHP Warning:  session_start(): open(tcp://127.0.0.1:6379?persistent=1&amp;weight=1&amp;timeout=3\sess_h83j62hoootf8hoev4vtdr5n3g, O_RDWR) failed: No such file or directory (2) in D:\laragon\www\app-rt\src\Core\Auth.php on line 21
+[06-May-2026 09:14:33 Asia/Jakarta] PHP Warning:  session_start(): Failed to read session data: files (path: tcp://127.0.0.1:6379?persistent=1&amp;weight=1&amp;timeout=3) in D:\laragon\www\app-rt\src\Core\Auth.php on line 21
+[06-May-2026 09:14:34 Asia/Jakarta] PHP Warning:  ini_set(): Session save handler &quot;redis&quot; cannot be found in D:\laragon\www\app-rt\src\Core\Auth.php on line 16
+[06-May-2026 09:14:34 Asia/Jakarta] PHP Warning:  session_start(): open(tcp://127.0.0.1:6379?persistent=1&amp;weight=1&amp;timeout=3\sess_h83j62hoootf8hoev4vtdr5n3g, O_RDWR) failed: No such file or directory (2) in D:\laragon\www\app-rt\src\Core\Auth.php on line 21
+[06-May-2026 09:14:34 Asia/Jakarta] PHP Warning:  session_start(): Failed to read session data: files (path: tcp://127.0.0.1:6379?persistent=1&amp;weight=1&amp;timeout=3) in D:\laragon\www\app-rt\src\Core\Auth.php on line 21
+[06-May-2026 09:14:34 Asia/Jakarta] PHP Warning:  ini_set(): Session save handler &quot;redis&quot; cannot be found in D:\laragon\www\app-rt\src\Core\Auth.php on line 16
+[06-May-2026 09:14:34 Asia/Jakarta] PHP Warning:  session_start(): open(tcp://127.0.0.1:6379?persistent=1&amp;weight=1&amp;timeout=3\sess_h83j62hoootf8hoev4vtdr5n3g, O_RDWR) failed: No such file or directory (2) in D:\laragon\www\app-rt\src\Core\Auth.php on line 21
+[06-May-2026 09:14:34 Asia/Jakarta] PHP Warning:  session_start(): Failed to read session data: files (path: tcp://127.0.0.1:6379?persistent=1&amp;weight=1&amp;timeout=3) in D:\laragon\www\app-rt\src\Core\Auth.php on line 21
+[06-May-2026 09:14:34 Asia/Jakarta] PHP Deprecated:  Automatic conversion of false to array is deprecated in D:\laragon\www\app-rt\src\Controllers\AttendanceController.php on line 251
+[06-May-2026 09:14:37 Asia/Jakarta] PHP Warning:  ini_set(): Session save handler &quot;redis&quot; cannot be found in D:\laragon\www\app-rt\src\Core\Auth.php on line 16
+[06-May-2026 09:14:37 Asia/Jakarta] PHP Warning:  session_start(): open(tcp://127.0.0.1:6379?persistent=1&amp;weight=1&amp;timeout=3\sess_h83j62hoootf8hoev4vtdr5n3g, O_RDWR) failed: No such file or directory (2) in D:\laragon\www\app-rt\src\Core\Auth.php on line 21
+[06-May-2026 09:14:37 Asia/Jakarta] PHP Warning:  session_start(): Failed to read session data: files (path: tcp://127.0.0.1:6379?persistent=1&amp;weight=1&amp;timeout=3) in D:\laragon\www\app-rt\src\Core\Auth.php on line 21
+[06-May-2026 09:14:43 Asia/Jakarta] PHP Warning:  ini_set(): Session save handler &quot;redis&quot; cannot be found in D:\laragon\www\app-rt\src\Core\Auth.php on line 16
+[06-May-2026 09:14:43 Asia/Jakarta] PHP Warning:  session_start(): open(tcp://127.0.0.1:6379?persistent=1&amp;weight=1&amp;timeout=3\sess_h83j62hoootf8hoev4vtdr5n3g, O_RDWR) failed: No such file or directory (2) in D:\laragon\www\app-rt\src\Core\Auth.php on line 21
+[06-May-2026 09:14:43 Asia/Jakarta] PHP Warning:  session_start(): Failed to read session data: files (path: tcp://127.0.0.1:6379?persistent=1&amp;weight=1&amp;timeout=3) in D:\laragon\www\app-rt\src\Core\Auth.php on line 21
+[06-May-2026 09:14:43 Asia/Jakarta] PHP Warning:  session_regenerate_id(): Session ID cannot be regenerated when there is no active session in D:\laragon\www\app-rt\src\Core\Auth.php on line 45
+[06-May-2026 09:14:44 Asia/Jakarta] PHP Warning:  ini_set(): Session save handler &quot;redis&quot; cannot be found in D:\laragon\www\app-rt\src\Core\Auth.php on line 16
+[06-May-2026 09:14:44 Asia/Jakarta] PHP Warning:  session_start(): open(tcp://127.0.0.1:6379?persistent=1&amp;weight=1&amp;timeout=3\sess_h83j62hoootf8hoev4vtdr5n3g, O_RDWR) failed: No such file or directory (2) in D:\laragon\www\app-rt\src\Core\Auth.php on line 21
+[06-May-2026 09:14:44 Asia/Jakarta] PHP Warning:  session_start(): Failed to read session data: files (path: tcp://127.0.0.1:6379?persistent=1&amp;weight=1&amp;timeout=3) in D:\laragon\www\app-rt\src\Core\Auth.php on line 21
+[06-May-2026 09:53:46 Asia/Jakarta] PHP Fatal error:  Uncaught PDOException: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'app_rt.meetings' doesn't exist in D:\laragon\www\app-rt\src\Core\Database.php:42
+Stack trace:
+#0 D:\laragon\www\app-rt\src\Core\Database.php(42): PDO->prepare('SELECT m.*, u.f...')
+#1 D:\laragon\www\app-rt\src\Controllers\MeetingController.php(8): Database->query('SELECT m.*, u.f...')
+#2 D:\laragon\www\app-rt\src\Core\Router.php(72): MeetingController->list()
+#3 D:\laragon\www\app-rt\public\index.php(222): Router->run()
+#4 {main}
+  thrown in D:\laragon\www\app-rt\src\Core\Database.php on line 42
