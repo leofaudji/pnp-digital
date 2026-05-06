@@ -128,7 +128,7 @@ export const Attendance = async (App) => {
 
     window.viewPatrolImage = (img) => {
         Swal.fire({
-            imageUrl: `${API.basePath}/uploads/patrol/${img}`,
+            imageUrl: img,
             imageAlt: 'Bukti Patroli',
             showConfirmButton: false,
             showCloseButton: true,

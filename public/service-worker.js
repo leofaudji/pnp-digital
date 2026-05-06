@@ -1,4 +1,4 @@
-const CACHE_NAME = 'rt-app-v8';
+const CACHE_NAME = 'rt-app-v9';
 const urlsToCache = [
     './',
     './assets/css/style.css',
@@ -25,7 +25,7 @@ const urlsToCache = [
 ];
 
 self.addEventListener('install', event => {
-    console.log('[ServiceWorker] Installing v8...', urlsToCache);
+    console.log('[ServiceWorker] Installing v9...', urlsToCache);
     self.skipWaiting();
     event.waitUntil(
         caches.open(CACHE_NAME)
@@ -40,7 +40,7 @@ self.addEventListener('install', event => {
 });
 
 self.addEventListener('activate', event => {
-    console.log('[ServiceWorker] Activating v8...');
+    console.log('[ServiceWorker] Activating v9...');
     event.waitUntil(
         caches.keys().then(cacheNames => {
             return Promise.all(

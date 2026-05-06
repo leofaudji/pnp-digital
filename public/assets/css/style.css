@@ -143,3 +143,80 @@
     visibility: hidden;
     pointer-events: none;
 }
+
+/* --- Native App Feel --- */
+:root {
+    --brand-rgb: 16, 185, 129;
+}
+
+body {
+    -webkit-tap-highlight-color: transparent;
+    -webkit-touch-callout: none;
+    overscroll-behavior-y: none; /* Prevent elastic scroll on body */
+    user-select: none; /* Prevent text selection globally */
+}
+
+/* Allow text selection in inputs and specific areas */
+input, textarea, [contenteditable="true"], .selectable-text {
+    user-select: text !important;
+    -webkit-user-select: text !important;
+}
+
+/* Smooth Scrolling for containers */
+.custom-scrollbar {
+    overscroll-behavior-y: contain;
+    -webkit-overflow-scrolling: touch;
+}
+
+/* Skeleton Shimmer Effect */
+.skeleton {
+    position: relative;
+    overflow: hidden;
+    background-color: #f1f5f9;
+    border-radius: 0.5rem;
+}
+
+.skeleton::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    transform: translateX(-100%);
+    background: linear-gradient(
+        90deg,
+        rgba(255, 255, 255, 0) 0%,
+        rgba(255, 255, 255, 0.4) 50%,
+        rgba(255, 255, 255, 0) 100%
+    );
+    animation: shimmer-swipe 1.5s infinite;
+}
+
+@keyframes shimmer-swipe {
+    100% {
+        transform: translateX(100%);
+    }
+}
+
+/* Pulse Animation for Red Badges */
+@keyframes pulse-red {
+    0%, 100% { transform: scale(1); opacity: 1; }
+    50% { transform: scale(1.2); opacity: 0.7; }
+}
+.animate-pulse-red {
+    animation: pulse-red 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+/* Page Transitions */
+.page-transition-enter {
+    animation: slide-up 0.4s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+@keyframes slide-up {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}

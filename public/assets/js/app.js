@@ -74,18 +74,59 @@ const App = {
         await this.handleRoute();
         await Chatbot.init();
 
+        // Start Idle Timer
+        this.initIdleTimer();
+
+        // Start
         updateStatus('System Ready');
         this.hideSplash();
+    },
+
+    initIdleTimer() {
+        let timeout;
+        const IDLE_TIME = 5 * 60 * 1000; // 5 Minutes
+
+        const resetTimer = () => {
+            clearTimeout(timeout);
+            // Only set timer if user is logged in and not on login page
+            const hash = window.location.hash;
+            if (hash !== '#/login' && !hash.startsWith('#/v/')) {
+                timeout = setTimeout(async () => {
+                    // Check if session is actually still active before showing alert
+                    const user = await this.getUser(true);
+                    if (user && user.id) {
+                        SwalCustom.fire({
+                            title: 'Sesi Berakhir',
+                            text: 'Anda tidak aktif selama 5 menit. Untuk keamanan, silakan masuk kembali.',
+                            icon: 'warning',
+                            confirmButtonText: 'Masuk Lagi',
+                            allowOutsideClick: false,
+                            allowEscapeKey: false
+                        }).then(() => {
+                            handleLogout(true);
+                        });
+                    }
+                }, IDLE_TIME);
+            }
+        };
+
+        // Events to monitor
+        ['mousedown', 'mousemove', 'keypress', 'scroll', 'touchstart'].forEach(name => {
+            document.addEventListener(name, resetTimer, true);
+        });
+
+        // Initialize first timer
+        resetTimer();
     },
 
     async initServiceWorker(updateStatus) {
         if (!('serviceWorker' in navigator)) return;
 
         updateStatus('Initializing System...');
-        
+
         try {
             const registration = await navigator.serviceWorker.register(`${this.basePath}/service-worker.js`);
-            
+
             // Listen for controllerchange (when a new SW takes over)
             navigator.serviceWorker.addEventListener('controllerchange', () => {
                 updateStatus('Update Installed! Restarting...');
@@ -96,7 +137,7 @@ const App = {
             registration.onupdatefound = () => {
                 const newWorker = registration.installing;
                 updateStatus('New Version Found...');
-                
+
                 newWorker.onstatechange = () => {
                     if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
                         updateStatus('Downloading Update...');
@@ -107,7 +148,7 @@ const App = {
             // Force check for updates
             updateStatus('Checking for Updates...');
             await registration.update();
-            
+
             // Give a small window for update check to resolve
             await new Promise(r => setTimeout(r, 600));
 

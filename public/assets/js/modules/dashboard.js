@@ -223,8 +223,8 @@ export const Dashboard = async (App) => {
                         ${(stats.patrol_findings || []).map(finding => `
                             <div class="snap-start shrink-0 w-72 bg-slate-50 rounded-[2rem] border border-slate-100 overflow-hidden group hover:shadow-xl hover:shadow-slate-200/50 transition-all duration-500">
                                 ${finding.image_proof ? `
-                                <div class="h-44 bg-slate-200 relative overflow-hidden cursor-zoom-in btn-preview-image" data-image="${API.basePath}/uploads/patrol/${finding.image_proof}" data-caption="${finding.checkpoint_name}">
-                                    <img src="${API.basePath}/uploads/patrol/${finding.image_proof}" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700">
+                                <div class="h-44 bg-slate-200 relative overflow-hidden cursor-zoom-in btn-preview-image" data-image="${finding.image_proof}" data-caption="${finding.checkpoint_name}">
+                                    <img src="${finding.image_proof}" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700">
                                     <div class="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent opacity-60 group-hover:opacity-40 transition-opacity"></div>
                                     <div class="absolute bottom-4 left-4">
                                         <span class="text-[9px] font-black text-white bg-brand-500 px-2 py-1 rounded-lg uppercase tracking-widest">${formatTime(finding.timestamp)}</span>

@@ -97,24 +97,20 @@ class SettingController extends BaseController
         // Better: Use fixed name 'logo_app.png' and handle cache busting in frontend/pdf.
         // Actually, let's use a hashed name and store it in DB.
         $ext = pathinfo($file['name'], PATHINFO_EXTENSION);
-        $filename = 'logo_' . time() . '.' . $ext;
-        $targetPath = $uploadDir . $filename;
+        // Use Unified Storage Engine
+        $url = Storage::upload($file, 'images');
 
-        // Validasi upload
-        if (move_uploaded_file($file['tmp_name'], $targetPath)) {
+        if ($url) {
             $db = Database::getInstance();
-            // Update setting
-            $relativeUrl = '/assets/images/' . $filename;
-
             $db->query(
                 "INSERT INTO settings (`key`, `value`) VALUES ('app_logo', ?) 
                  ON DUPLICATE KEY UPDATE `value` = VALUES(`value`)",
-                [$relativeUrl]
+                [$url]
             );
 
-            $this->json(['success' => true, 'path' => $relativeUrl]);
+            $this->json(['success' => true, 'path' => $url]);
         } else {
-            $this->json(['error' => 'Gagal menyimpan file.'], 500);
+            $this->json(['error' => 'Gagal menyimpan file ke storage.'], 500);
         }
     }
     public function get_fee_categories()

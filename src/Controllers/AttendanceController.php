@@ -31,22 +31,8 @@ class AttendanceController extends BaseController
 
                 $image_path = null;
                 if (!empty($data['image'])) {
-                    $imageData = $data['image'];
-                    if (preg_match('/^data:image\/(\w+);base64,/', $imageData, $type_match)) {
-                        $imageData = substr($imageData, strpos($imageData, ',') + 1);
-                        $imageExt = strtolower($type_match[1]);
-                        if (in_array($imageExt, ['jpg', 'jpeg', 'png', 'gif', 'webp'])) {
-                            $imageData = base64_decode($imageData);
-                            if ($imageData !== false) {
-                                $uploadDir = __DIR__ . '/../../public/uploads/patrol/';
-                                if (!is_dir($uploadDir))
-                                    mkdir($uploadDir, 0777, true);
-                                $fileName = 'patrol_' . time() . '_' . uniqid() . '.' . $imageExt;
-                                file_put_contents($uploadDir . $fileName, $imageData);
-                                $image_path = $fileName;
-                            }
-                        }
-                    }
+                    // Use Unified Storage Engine for Base64 (Supports R2 & Local)
+                    $image_path = Storage::uploadBase64($data['image'], 'patrol');
                 }
 
                 // COOLDOWN CHECK (In-memory from JSON is easier actually)
@@ -234,7 +220,7 @@ class AttendanceController extends BaseController
                     'timestamp' => "{$pl['date']} {$s['time']}",
                     'detail' => $checkpoints[$s['checkpoint_id']] ?? 'Unknown Checkpoint',
                     'notes' => $s['notes'] ?? null,
-                    'image_proof' => $s['image'] ?? null
+                    'image_proof' => Storage::url($s['image'] ?? null)
                 ];
             }
         }

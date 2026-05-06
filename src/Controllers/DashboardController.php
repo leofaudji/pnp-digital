@@ -126,7 +126,7 @@ class DashboardController extends BaseController
                             'satpam_name' => $row['satpam_name'],
                             'timestamp' => "{$row['date']} {$s['time']}",
                             'notes' => $s['notes'],
-                            'image_proof' => $s['image']
+                            'image_proof' => Storage::url($s['image'] ?? null)
                         ];
                     }
                 }

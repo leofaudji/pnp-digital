@@ -280,18 +280,20 @@ export const Login = async (App) => {
     if (window.lucide) lucide.createIcons();
 };
 
-export const handleLogout = async () => {
-    const result = await SwalCustom.fire({
-        title: 'Logout?',
-        text: "Anda akan keluar dari sesi ini.",
-        icon: 'warning',
-        showCancelButton: true,
-        confirmButtonText: 'Ya, Keluar',
-        cancelButtonText: 'Batal',
-        confirmButtonColor: '#e11d48', // Rose color for logout
-    });
+export const handleLogout = async (force = false) => {
+    if (!force) {
+        const result = await SwalCustom.fire({
+            title: 'Logout?',
+            text: "Anda akan keluar dari sesi ini.",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: 'Ya, Keluar',
+            cancelButtonText: 'Batal',
+            confirmButtonColor: '#e11d48', // Rose color for logout
+        });
 
-    if (result.isConfirmed) {
+        if (!result.isConfirmed) return;
+    }
         const res = await API.post('/api/logout');
         if (res && res.success) {
             if (window.App) window.App.user = null;
@@ -301,5 +303,4 @@ export const handleLogout = async () => {
             window.location.href = basePath + '/#/login';
             window.location.reload();
         }
-    }
 };
