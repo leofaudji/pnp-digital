@@ -2,13 +2,15 @@
 
 Semua perubahan penting pada proyek ini akan didokumentasikan di file ini.
 
-## [2.0.1] - 2026-05-06
+## [2.0.2] - 2026-05-06
 ### Added
-- Implementasi **Client-Side Image Compression** pada modul Scanner. Foto bukti patroli kini otomatis di-resize (max 1024px) sebelum dikirim untuk mencegah error *memory limit* dan menghemat kuota.
-- Penambahan logging internal pada sistem storage untuk memudahkan debugging kegagalan upload.
+- Fitur **Cek Update Manual** di halaman Pengaturan. Bapak kini bisa memaksa pengecekan versi terbaru secara langsung jika sistem otomatis terhambat cache browser.
+- Optimasi registrasi Service Worker dengan `updateViaCache: none` untuk memastikan perangkat mobile selalu mendapatkan file terbaru tanpa tertahan cache HTTP.
 
 ### Fixed
-- Perbaikan error "Terjadi kesalahan saat memproses QR" yang muncul saat mengunggah foto bukti patroli berukuran besar.
+- Masalah sinkronisasi versi pada beberapa perangkat mobile (PWA) yang sering tertahan di versi lama.
+
+## [2.0.1] - 2026-05-06
 
 ## [2.0.0] - 2026-05-06
 

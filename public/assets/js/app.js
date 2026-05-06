@@ -125,7 +125,41 @@ const App = {
         updateStatus('Initializing System...');
 
         try {
-            const registration = await navigator.serviceWorker.register(`${this.basePath}/service-worker.js`);
+            const registration = await navigator.serviceWorker.register(`${this.basePath}/service-worker.js`, {
+                updateViaCache: 'none'
+            });
+
+            // Global update function for manual checks
+            window.checkUpdate = async (manual = false) => {
+                if (manual) {
+                    SwalCustom.fire({
+                        title: 'Mengecek Update...',
+                        didOpen: () => { Swal.showLoading(); },
+                        allowOutsideClick: false
+                    });
+                }
+                
+                try {
+                    await registration.update();
+                    if (manual) {
+                        setTimeout(() => {
+                            if (!registration.installing && !registration.waiting) {
+                                SwalCustom.fire({
+                                    title: 'Sistem Terupdate',
+                                    text: 'Anda sudah menggunakan versi terbaru.',
+                                    icon: 'success',
+                                    toast: true,
+                                    position: 'top-end',
+                                    showConfirmButton: false,
+                                    timer: 3000
+                                });
+                            }
+                        }, 1000);
+                    }
+                } catch (e) {
+                    console.error('Update check failed:', e);
+                }
+            };
 
             // Listen for controllerchange (when a new SW takes over)
             navigator.serviceWorker.addEventListener('controllerchange', () => {
@@ -137,6 +171,19 @@ const App = {
             registration.onupdatefound = () => {
                 const newWorker = registration.installing;
                 updateStatus('New Version Found...');
+                
+                if (navigator.serviceWorker.controller) {
+                    // This is an update (not first install)
+                    SwalCustom.fire({
+                        title: 'Update Tersedia',
+                        text: 'Versi baru sedang diunduh. Aplikasi akan restart otomatis.',
+                        icon: 'info',
+                        toast: true,
+                        position: 'bottom-end',
+                        showConfirmButton: false,
+                        timer: 5000
+                    });
+                }
 
                 newWorker.onstatechange = () => {
                     if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
@@ -145,8 +192,7 @@ const App = {
                 };
             };
 
-            // Force check for updates
-            updateStatus('Checking for Updates...');
+            // Force check for updates on startup
             await registration.update();
 
             // Give a small window for update check to resolve

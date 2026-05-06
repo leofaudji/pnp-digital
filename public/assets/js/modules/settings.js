@@ -312,6 +312,36 @@ export const Settings = async (App) => {
             </div>
         </div>
 
+        <!-- System Information & Updates -->
+        <div class="bg-white/70 backdrop-blur-xl rounded-[2.5rem] border border-white shadow-xl shadow-slate-200/50 overflow-hidden">
+             <div class="px-10 py-8 border-b border-slate-100/50 flex items-center bg-slate-50/20">
+                <div class="p-4 bg-brand-50 text-brand-600 rounded-2xl mr-5 shadow-sm">
+                    <i data-lucide="info" class="w-6 h-6"></i>
+                </div>
+                <div>
+                    <h3 class="text-xl font-black text-slate-900">Informasi Sistem</h3>
+                    <p class="text-xs text-slate-500 font-medium mt-1">Cek versi dan pembaruan aplikasi</p>
+                </div>
+            </div>
+            <div class="p-10">
+                <div class="flex flex-col md:flex-row items-center justify-between gap-6 p-8 bg-slate-50 rounded-[2rem] border border-slate-100">
+                    <div class="flex items-center gap-6 text-center md:text-left flex-col md:flex-row">
+                        <div class="w-16 h-16 bg-white rounded-2xl flex flex-col items-center justify-center shadow-sm border border-slate-100">
+                             <span class="text-[8px] font-black text-slate-400 uppercase leading-none mb-0.5">Build</span>
+                             <span class="text-lg font-black text-slate-900 leading-none">${settings.app_version || '1.0.0'}</span>
+                        </div>
+                        <div>
+                            <h4 class="text-lg font-black text-slate-900 mb-1">Status Versi</h4>
+                            <p class="text-sm text-slate-500 font-medium italic">Klik tombol di samping untuk mengecek apakah ada pembaruan sistem terbaru.</p>
+                        </div>
+                    </div>
+                    <button onclick="window.checkUpdate(true)" class="px-8 py-4 bg-white border-2 border-slate-200 text-slate-700 font-black rounded-2xl hover:bg-brand-600 hover:text-white hover:border-brand-600 transition-all active:scale-95 flex items-center shrink-0">
+                        <i data-lucide="refresh-cw" class="w-5 h-5 mr-3"></i> CEK UPDATE SEKARANG
+                    </button>
+                </div>
+            </div>
+        </div>
+
         <!-- Database & Maintenance -->
         <div class="bg-white/70 backdrop-blur-xl rounded-[2.5rem] border border-white shadow-xl shadow-slate-200/50 overflow-hidden">
              <div class="px-10 py-8 border-b border-slate-100/50 flex items-center bg-slate-50/20">
